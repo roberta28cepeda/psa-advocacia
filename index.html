@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PSA Advocacia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --wine:#3d0a1e;--wine2:#5a0e2b;--wine3:#2a0614;--wine4:#180410;
+  --gold:#c9a84c;--gold2:#e8c96a;--gold3:#a07830;--gold4:#7a5820;
+  --bg:#0c0908;--bg2:#181008;--bg3:#22130a;--bg4:#2c1a10;
+  --txt:#f0e8d8;--txt2:#c8b090;--txt3:#8a7050;--txt4:#5a4028;
+  --bdr:rgba(201,168,76,.12);--bdr2:rgba(201,168,76,.28);--bdr3:rgba(201,168,76,.5);
+  --red:#c85050;--green:#4a9e60;--amber:#c89010;--blue:#5888d8;--purple:#9060c0;
+  --sb:220px;
+}
+html,body{height:100%;font-family:'Jost',sans-serif;color:var(--txt);background:var(--bg);font-size:13px;overflow:hidden}
+input,select,textarea,button{font-family:'Jost',sans-serif;font-size:13px}
+a{color:var(--gold3);text-decoration:none}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:2px}
+
+/* ── LAYOUT ── */
+.app{display:flex;height:100vh}
+.sidebar{width:var(--sb);flex-shrink:0;background:var(--bg3);border-right:1px solid var(--bdr);display:flex;flex-direction:column;overflow-y:auto}
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+
+/* ── SIDEBAR ── */
+.logo{padding:18px 16px 14px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:11px}
+.logo-mark{width:38px;height:38px;flex-shrink:0;background:var(--wine2);border:1px solid var(--gold3);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.brand{font-family:'Playfair Display',serif;font-size:13px;font-weight:600;color:var(--gold);letter-spacing:.3px}
+.brand-sub{font-size:10px;color:var(--txt3);margin-top:1px}
+.nav{flex:1;padding:6px 0}
+.ns{font-size:9px;color:var(--txt4);padding:12px 16px 4px;letter-spacing:1.2px;text-transform:uppercase}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12px;color:var(--txt2);cursor:pointer;border-left:2px solid transparent;transition:all .15s;user-select:none;position:relative}
+.ni:hover{color:var(--gold2);background:rgba(201,168,76,.05)}
+.ni.active{color:var(--gold);background:rgba(201,168,76,.09);border-left-color:var(--gold)}
+.ni svg{flex-shrink:0;opacity:.65}.ni.active svg,.ni:hover svg{opacity:1}
+.nbdg{margin-left:auto;font-size:9px;background:var(--wine2);color:var(--gold2);border:1px solid var(--gold4);border-radius:7px;padding:1px 5px;min-width:16px;text-align:center}
+.nbdg.alert{background:#5a1010;color:#f08080;border-color:#8a3030}
+
+/* ── TOPBAR ── */
+.topbar{height:50px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;padding:0 20px;gap:10px;flex-shrink:0;background:var(--bg3)}
+.tbtitle{font-family:'Playfair Display',serif;font-size:15px;font-weight:500;flex:1;color:var(--gold)}
+.notif-bell{position:relative;cursor:pointer;padding:6px 8px;border-radius:6px;border:1px solid var(--bdr);color:var(--txt3);display:flex;align-items:center;transition:all .15s}
+.notif-bell:hover{border-color:var(--gold3);color:var(--gold)}
+.notif-dot{position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--red);display:none}
+.notif-dot.active{display:block}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:6px 12px;border-radius:6px;cursor:pointer;border:1px solid var(--bdr2);background:transparent;color:var(--txt2);transition:all .15s;white-space:nowrap;user-select:none}
+.btn:hover{color:var(--gold);border-color:var(--gold3)}
+.btn-gold{background:var(--gold3);color:var(--wine3);border-color:var(--gold);font-weight:500}
+.btn-gold:hover{background:var(--gold);color:var(--wine3)}
+.btn-sm{font-size:10px;padding:3px 8px;border-radius:5px}
+.btn-xs{font-size:10px;padding:2px 6px;border-radius:4px}
+.btn-icon{padding:5px 7px;border-radius:5px}
+.btn-danger{border-color:rgba(200,80,80,.28);color:var(--red)}
+.btn-danger:hover{background:rgba(200,80,80,.1);border-color:var(--red)}
+.btn-blue{border-color:rgba(88,136,216,.3);color:var(--blue)}
+.btn-blue:hover{background:rgba(88,136,216,.08);border-color:var(--blue)}
+.btn-green{border-color:rgba(74,158,96,.3);color:var(--green)}
+.btn-green:hover{background:rgba(74,158,96,.08);border-color:var(--green)}
+
+/* ── CONTENT ── */
+.content{flex:1;overflow-y:auto;padding:18px 20px}
+.page{display:none;animation:fadeIn .2s ease}.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* ── KPIs ── */
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.kgrid5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.kpi{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:12px 14px}
+.klbl{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.kval{font-family:'Playfair Display',serif;font-size:24px;font-weight:500;color:var(--gold)}
+.kdelta{font-size:10px;margin-top:3px;color:var(--txt3)}
+.kgreen{color:var(--green)}.kamber{color:var(--amber)}.kred{color:var(--red)}.kblue{color:var(--blue)}
+
+/* ── CHARTS ── */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.cc{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:14px}
+.clbl{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px}
+
+/* ── SECTION HEADER ── */
+.sec-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sec-hdr h2{font-family:'Playfair Display',serif;font-size:15px;font-weight:500;color:var(--gold);flex:1}
+
+/* ── SEARCH ROW ── */
+.srow{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.srow input,.srow select{background:var(--bg3);border:1px solid var(--bdr);color:var(--txt);font-size:12px;padding:7px 11px;border-radius:6px;outline:none;transition:border .15s}
+.srow input:focus,.srow select:focus{border-color:var(--gold3)}
+.srow input{flex:1;min-width:140px}
+.srow select option{background:var(--bg3)}
+
+/* ── TABLE ── */
+.tw{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;overflow:hidden;margin-bottom:14px}
+.tw-hdr{padding:10px 14px 8px;font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+.tbl th{background:var(--wine3);padding:8px 11px;text-align:left;font-size:9px;font-weight:500;color:var(--gold3);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr2)}
+.tbl td{padding:8px 11px;border-bottom:1px solid var(--bdr);color:var(--txt);vertical-align:middle;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:rgba(201,168,76,.03)}
+
+/* ── PILLS ── */
+.pill{display:inline-block;font-size:10px;padding:2px 8px;border-radius:7px;border:1px solid;white-space:nowrap}
+.p-familia{background:rgba(180,90,160,.13);color:#c878a8;border-color:rgba(180,90,160,.3)}
+.p-criminal{background:rgba(200,80,80,.13);color:#d86868;border-color:rgba(200,80,80,.3)}
+.p-inventario{background:rgba(201,168,76,.13);color:#c9a84c;border-color:rgba(201,168,76,.3)}
+.p-previdenciario{background:rgba(80,160,200,.13);color:#60a8d8;border-color:rgba(80,160,200,.3)}
+.p-civel{background:rgba(80,180,120,.13);color:#58b880;border-color:rgba(80,180,120,.3)}
+.p-trabalhista{background:rgba(200,150,80,.13);color:#d09858;border-color:rgba(200,150,80,.3)}
+.p-tributario{background:rgba(150,100,200,.13);color:#9878c8;border-color:rgba(150,100,200,.3)}
+.p-ativos,.p-concluida{background:rgba(74,158,96,.13);color:#4a9e60;border-color:rgba(74,158,96,.3)}
+.p-em-andamento{background:rgba(88,136,216,.13);color:#5888d8;border-color:rgba(88,136,216,.3)}
+.p-pendente,.p-aguardando-retorno{background:rgba(200,144,16,.13);color:#c89010;border-color:rgba(200,144,16,.3)}
+.p-finalizado{background:rgba(130,120,110,.13);color:#908880;border-color:rgba(130,120,110,.3)}
+.p-alta{background:rgba(200,80,80,.13);color:#d86868;border-color:rgba(200,80,80,.3)}
+.p-media{background:rgba(200,144,16,.13);color:#c89010;border-color:rgba(200,144,16,.3)}
+.p-baixa{background:rgba(74,158,96,.13);color:#4a9e60;border-color:rgba(74,158,96,.3)}
+.p-principal{background:rgba(201,168,76,.1);color:#a07830;border-color:rgba(201,168,76,.25)}
+.p-desdobramento{background:rgba(120,100,80,.13);color:#907860;border-color:rgba(120,100,80,.3)}
+
+/* ── MODAIS ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:flex-start;justify-content:center;padding:30px 20px;overflow-y:auto}
+.overlay.open{display:flex}
+.modal{background:var(--bg3);border:1px solid var(--bdr2);border-radius:14px;width:100%;max-width:600px;margin:auto;display:flex;flex-direction:column}
+.modal-hdr{padding:18px 22px 14px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
+.modal-title{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold);flex:1}
+.modal-body{padding:18px 22px}
+.modal-footer{padding:12px 22px;border-top:1px solid var(--bdr);display:flex;justify-content:flex-end;gap:8px}
+
+/* ── FORM ── */
+.fg{margin-bottom:12px}
+.fg label{display:block;font-size:9px;color:var(--txt3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--bg2);border:1px solid var(--bdr);color:var(--txt);font-size:12px;padding:7px 10px;border-radius:6px;outline:none;transition:border .15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold3)}
+.fg select option{background:var(--bg2)}
+.fg textarea{min-height:72px;resize:vertical;line-height:1.6}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* ── CALENDAR ── */
+.cal-wrap{background:var(--bg3);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.cal-nav{display:flex;align-items:center;padding:12px 16px;border-bottom:1px solid var(--bdr);gap:10px}
+.cal-nav-title{font-family:'Playfair Display',serif;font-size:14px;color:var(--gold);flex:1;text-align:center}
+.cal-grid-hdr{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--bdr)}
+.cal-grid-hdr div{padding:7px 4px;text-align:center;font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr)}
+.cal-day{min-height:64px;padding:5px 6px;border-right:1px solid var(--bdr);border-bottom:1px solid var(--bdr);cursor:pointer;transition:background .12s;position:relative}
+.cal-day:nth-child(7n){border-right:none}
+.cal-day:hover{background:rgba(201,168,76,.05)}
+.cal-day.today{background:rgba(201,168,76,.08)}
+.cal-day.today .cal-day-num{background:var(--gold3);color:var(--wine3);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-weight:500}
+.cal-day.other-month .cal-day-num{color:var(--txt4)}
+.cal-day-num{font-size:11px;color:var(--txt2);margin-bottom:3px;font-weight:400;width:20px;height:20px;display:flex;align-items:center;justify-content:center}
+.cal-event{font-size:9px;padding:1px 5px;border-radius:3px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;line-height:1.5}
+.cal-event:hover{filter:brightness(1.2)}
+
+/* ── DAY VIEW ── */
+.day-view{background:var(--bg3);border:1px solid var(--bdr);border-radius:12px;padding:16px;margin-bottom:14px}
+.day-view-title{font-family:'Playfair Display',serif;font-size:14px;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.day-event-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--bdr);align-items:flex-start}
+.day-event-item:last-child{border-bottom:none}
+.dev-time{font-size:11px;color:var(--txt3);min-width:40px;margin-top:1px}
+.dev-bar{width:3px;border-radius:2px;min-height:32px;flex-shrink:0;margin-top:2px}
+.dev-body{flex:1}
+.dev-titulo{font-size:12px;color:var(--txt);margin-bottom:3px}
+.dev-meta{font-size:10px;color:var(--txt3)}
+.dev-actions{display:flex;gap:5px;margin-top:6px}
+
+/* ── UPCOMING ── */
+.upcoming-list{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.upcoming-item{display:flex;align-items:center;gap:10px;background:var(--bg3);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;cursor:pointer;transition:border .12s}
+.upcoming-item:hover{border-color:var(--gold3)}
+.upcoming-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.upcoming-days{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:500;min-width:54px;text-align:center}
+.days-hoje{background:rgba(200,80,80,.15);color:#d86868}
+.days-urgente{background:rgba(200,144,16,.15);color:#c89010}
+.days-ok{background:rgba(74,158,96,.15);color:#4a9e60}
+.days-passado{background:rgba(130,120,110,.15);color:#908880}
+
+/* ── KANBAN ── */
+.kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.kancol{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:11px}
+.kancol-hdr{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.kancol-cnt{background:var(--bg2);border:1px solid var(--bdr);border-radius:4px;padding:1px 5px;font-size:9px}
+.kancard{background:var(--bg2);border:1px solid var(--bdr);border-radius:7px;padding:10px 11px;margin-bottom:7px;cursor:pointer;transition:border .12s}
+.kancard:hover{border-color:var(--gold3)}
+.kancard:last-child{margin-bottom:0}
+.ktitulo{font-size:11px;color:var(--txt);margin-bottom:5px;line-height:1.4}
+.kmeta{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:3px}
+.kprazo{font-size:10px;color:var(--txt3)}
+.kprazo.vencido{color:var(--red)}.kprazo.proximo{color:var(--amber)}
+.kactions{display:flex;gap:4px;margin-top:7px;flex-wrap:wrap}
+
+/* ── DEMANDAS ── */
+.demanda-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;padding:14px 16px;margin-bottom:10px;transition:border .12s}
+.demanda-card:hover{border-color:var(--bdr2)}
+.demanda-hdr{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.demanda-titulo{font-family:'Playfair Display',serif;font-size:14px;color:var(--gold);flex:1;line-height:1.3}
+.demanda-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.progress-wrap{margin-bottom:10px}
+.progress-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--txt3);margin-bottom:4px}
+.progress-bar{height:4px;background:var(--bg2);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px;background:var(--gold3);transition:width .4s}
+.etapas-list{display:flex;flex-direction:column;gap:5px}
+.etapa-item{display:flex;align-items:center;gap:8px;font-size:11px;cursor:pointer;padding:3px 0}
+.etapa-check{width:14px;height:14px;border-radius:3px;border:1px solid var(--bdr2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.etapa-check.done{background:var(--gold3);border-color:var(--gold)}
+.etapa-check.done::after{content:'✓';font-size:9px;color:var(--wine3)}
+.etapa-txt{color:var(--txt2)}
+.etapa-txt.done{color:var(--txt3);text-decoration:line-through}
+
+/* ── TIMELINE ── */
+.timeline{display:flex;flex-direction:column;gap:9px}
+.tl-item{display:flex;gap:11px}
+.tl-dot{width:7px;height:7px;border-radius:50%;background:var(--gold3);flex-shrink:0;margin-top:5px}
+.tl-body{flex:1;background:var(--bg2);border:1px solid var(--bdr);border-radius:7px;padding:10px 12px}
+.tl-hdr{display:flex;align-items:center;gap:7px;margin-bottom:4px;flex-wrap:wrap}
+.tl-tipo{font-size:10px;padding:1px 6px;border-radius:3px;background:rgba(201,168,76,.1);color:var(--gold3);border:1px solid var(--bdr)}
+.tl-proc{font-size:10px;color:var(--txt3)}
+.tl-date{font-size:10px;color:var(--txt3);margin-left:auto}
+.tl-desc{font-size:12px;color:var(--txt2);line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.tl-actions{display:flex;gap:5px;margin-top:7px}
+
+/* ── NOTIF PANEL ── */
+.notif-panel{position:fixed;top:52px;right:0;width:320px;background:var(--bg3);border-left:1px solid var(--bdr2);height:calc(100vh - 52px);z-index:500;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease}
+.notif-panel.open{transform:none}
+.notif-panel-hdr{padding:14px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px}
+.notif-panel-title{font-family:'Playfair Display',serif;font-size:14px;color:var(--gold);flex:1}
+.notif-list{flex:1;overflow-y:auto;padding:10px}
+.notif-item{background:var(--bg2);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;margin-bottom:7px;cursor:pointer;transition:border .12s}
+.notif-item:hover{border-color:var(--gold3)}
+.notif-item.unread{border-left:3px solid var(--red)}
+.notif-item-hdr{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.notif-tipo{font-size:9px;padding:1px 6px;border-radius:3px}
+.notif-titulo{font-size:12px;color:var(--txt);line-height:1.4;margin-bottom:3px}
+.notif-desc{font-size:11px;color:var(--txt3)}
+
+/* ── CAMPOS ── */
+.cf-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--bdr)}
+.cf-item:last-child{border-bottom:none}
+.cf-name{flex:1;font-size:12px}
+.cf-type{font-size:10px;color:var(--txt3);background:var(--bg2);padding:2px 6px;border-radius:4px}
+.section-divider{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.7px;padding:10px 0 6px;border-top:1px solid var(--bdr);margin-top:4px}
+
+/* ── CNJ ── */
+.cnj-box{background:var(--bg2);border:1px solid rgba(88,136,216,.25);border-radius:9px;padding:14px;margin-top:10px}
+.cnj-badge{font-size:10px;padding:2px 8px;border-radius:5px;background:rgba(88,136,216,.1);color:var(--blue);border:1px solid rgba(88,136,216,.3)}
+.cnj-field .cnj-lbl{font-size:9px;color:var(--txt3);text-transform:uppercase;margin-bottom:2px}
+.cnj-field .cnj-val{font-size:12px;color:var(--txt);line-height:1.4}
+.cnj-mov{background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;padding:8px 11px;margin-bottom:5px}
+.spinner{width:14px;height:14px;border:2px solid var(--bdr2);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg3);border:1px solid var(--bdr3);border-radius:8px;padding:11px 16px;font-size:12px;color:var(--txt);z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;pointer-events:none;max-width:280px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:rgba(74,158,96,.5);color:var(--green)}
+.toast.error{border-color:rgba(200,80,80,.5);color:var(--red)}
+.toast.info{border-color:rgba(88,136,216,.4);color:var(--blue)}
+.empty{text-align:center;padding:32px;color:var(--txt3);font-size:13px}
+.dot-sep{width:3px;height:3px;border-radius:50%;background:var(--txt4);display:inline-block;margin:0 5px;vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg width="24" height="24" viewBox="0 0 24 24">
+        <text x="1" y="18" font-family="Playfair Display,serif" font-size="16" font-weight="600" fill="#c9a84c">P</text>
+        <text x="11" y="20" font-family="Playfair Display,serif" font-size="12" fill="#a07830">A</text>
+      </svg>
+    </div>
+    <div><div class="brand">PSA Advocacia</div><div class="brand-sub">Sistema Jurídico</div></div>
+  </div>
+  <nav class="nav">
+    <div class="ns">Principal</div>
+    <div class="ni active" onclick="goPage(this,'dash')">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+      Dashboard
+    </div>
+    <div class="ni" onclick="goPage(this,'agenda')">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="12" height="11" rx="1"/><path d="M5 1v3M11 1v3M2 7h12"/></svg>
+      Agenda & Prazos
+      <span class="nbdg alert" id="bdg-agenda">0</span>
+    </div>
+    <div class="ns">Jurídico</div>
+    <div class="ni" onclick="goPage(this,'processos')">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 2h10a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M5 6h6M5 9h4"/></svg>
+      Processos
+      <span class="nbdg" id="bdg-proc">0</span>
+    </div>
+    <div class="ni" onclick="goPage(this,'andamentos')">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l2.5 2"/></svg>
+      Andamentos
+    </div>
+    <div class="ni" onclick="goPage(this,'demandas')">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 4h12M2 8h8M2 12h5"/><circle cx="13" cy="11" r="2.5"/><path d="M12 11h1.5"/></svg>
+      Demandas
+      <span class="nbdg" id="bdg-dem">0</span>
+    </div>
+    <div class="ns">Gestão</div>
+    <div class="ni" onclick="goPage(this,'tarefas')">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 4h12M2 8h12M2 12h7"/><path d="M12 10l1.5 1.5L16 9"/></svg>
+      Tarefas
+      <span class="nbdg" id="bdg-tar">0</span>
+    </div>
+    <div class="ni" onclick="goPage(this,'clientes')">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3.3 2.7-5 6-5s6 1.7 6 5"/></svg>
+      Clientes
+      <span class="nbdg" id="bdg-cli">0</span>
+    </div>
+    <div class="ns">Config</div>
+    <div class="ni" onclick="goPage(this,'campos')">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
+      Campos personalizados
+    </div>
+  </nav>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <span class="tbtitle" id="tbtitle">Dashboard</span>
+    <button class="btn btn-blue" onclick="openCNJModal()">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l2.5 2"/></svg>
+      CNJ
+    </button>
+    <div class="notif-bell" onclick="toggleNotif()" id="notif-bell">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1a5 5 0 015 5v3l1.5 2H1.5L3 9V6a5 5 0 015-5z"/><path d="M6 13a2 2 0 004 0"/></svg>
+      <div class="notif-dot" id="notif-dot"></div>
+    </div>
+    <button class="btn btn-gold" onclick="ctxAdd()">
+      <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M6 1v10M1 6h10"/></svg>
+      Novo
+    </button>
+  </div>
+
+  <div class="content" id="main-content">
+
+    <!-- DASHBOARD -->
+    <div id="page-dash" class="page active">
+      <div class="kgrid5">
+        <div class="kpi"><div class="klbl">Processos</div><div class="kval" id="k-total">—</div><div class="kdelta" id="k-areas">—</div></div>
+        <div class="kpi"><div class="klbl">Ativos</div><div class="kval kgreen" id="k-ativos">—</div><div class="kdelta">em andamento</div></div>
+        <div class="kpi"><div class="klbl">Tarefas pendentes</div><div class="kval kamber" id="k-pend">—</div><div class="kdelta kamber" id="k-pend-d">—</div></div>
+        <div class="kpi"><div class="klbl">Eventos próximos</div><div class="kval kred" id="k-eventos">—</div><div class="kdelta">próximos 7 dias</div></div>
+        <div class="kpi"><div class="klbl">Valor causas</div><div class="kval" id="k-valor" style="font-size:14px;margin-top:7px">—</div><div class="kdelta">total ativo</div></div>
+      </div>
+      <div class="charts-row">
+        <div class="cc"><div class="clbl">Processos por área</div><div style="position:relative;height:160px"><canvas id="cArea" role="img" aria-label="Áreas">.</canvas></div></div>
+        <div class="cc"><div class="clbl">Status</div><div style="position:relative;height:160px"><canvas id="cStatus" role="img" aria-label="Status">.</canvas></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div>
+          <div class="tw-hdr" style="background:var(--bg3);border:1px solid var(--bdr);border-radius:10px 10px 0 0;border-bottom:none">Próximos eventos</div>
+          <div class="tw" style="border-radius:0 0 10px 10px;margin-bottom:0" id="dash-eventos"></div>
+        </div>
+        <div>
+          <div class="tw-hdr" style="background:var(--bg3);border:1px solid var(--bdr);border-radius:10px 10px 0 0;border-bottom:none">Tarefas urgentes</div>
+          <div class="tw" style="border-radius:0 0 10px 10px;margin-bottom:0" id="dash-tarefas"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGENDA -->
+    <div id="page-agenda" class="page">
+      <div class="sec-hdr">
+        <h2>Agenda & Prazos</h2>
+        <button class="btn btn-gold" onclick="openEventoForm()">+ Novo evento</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:14px">
+        <div>
+          <div class="cal-wrap">
+            <div class="cal-nav">
+              <button class="btn btn-icon" onclick="calNav(-1)">‹</button>
+              <div class="cal-nav-title" id="cal-title">—</div>
+              <button class="btn btn-icon" onclick="calNav(1)">›</button>
+              <button class="btn btn-sm" onclick="calToday()">Hoje</button>
+            </div>
+            <div class="cal-grid-hdr">
+              <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+          </div>
+        </div>
+        <div>
+          <div class="day-view" id="day-view">
+            <div class="day-view-title" id="day-view-title">Selecione um dia</div>
+            <div id="day-events-list"><div class="empty" style="padding:20px">Clique em um dia</div></div>
+          </div>
+          <div class="tw-hdr" style="background:var(--bg3);border:1px solid var(--bdr);border-radius:10px 10px 0 0;border-bottom:none;margin-bottom:0">Próximos 30 dias</div>
+          <div class="upcoming-list" id="upcoming-list" style="margin-bottom:0;background:var(--bg3);border:1px solid var(--bdr);border-radius:0 0 10px 10px;padding:10px 10px 2px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROCESSOS -->
+    <div id="page-processos" class="page">
+      <div class="sec-hdr"><h2>Processos</h2><button class="btn btn-gold" onclick="openProcForm()">+ Novo processo</button></div>
+      <div class="srow">
+        <input id="q-proc" placeholder="Buscar número, autor, fórum..." oninput="renderProc()">
+        <select id="f-area-proc" onchange="renderProc()"><option value="">Todas as áreas</option><option>FAMILIA</option><option>CRIMINAL</option><option>INVENTARIO</option><option>PREVIDENCIARIO</option><option>CIVEL</option><option>TRABALHISTA</option><option>TRIBUTARIO</option></select>
+        <select id="f-status-proc" onchange="renderProc()"><option value="">Todos os status</option><option>ATIVOS</option><option>PENDENTE</option><option>EM ANDAMENTO</option><option>FINALIZADO</option></select>
+      </div>
+      <div class="tw"><table class="tbl"><thead><tr><th style="width:26%">Nº Processo</th><th style="width:16%">Autor</th><th style="width:9%">Área</th><th style="width:9%">Modal.</th><th style="width:9%">Status</th><th style="width:10%">Valor</th><th style="width:21%">Ações</th></tr></thead><tbody id="tbl-proc"></tbody></table></div>
+    </div>
+
+    <!-- ANDAMENTOS -->
+    <div id="page-andamentos" class="page">
+      <div class="sec-hdr"><h2>Andamentos</h2><button class="btn btn-gold" onclick="openAndForm()">+ Novo andamento</button></div>
+      <div class="srow">
+        <input id="q-and" placeholder="Buscar tipo ou descrição..." oninput="renderAnd()">
+        <select id="f-proc-and" onchange="renderAnd()"><option value="">Todos os processos</option></select>
+      </div>
+      <div class="timeline" id="timeline-list"></div>
+    </div>
+
+    <!-- DEMANDAS -->
+    <div id="page-demandas" class="page">
+      <div class="sec-hdr"><h2>Demandas</h2><button class="btn btn-gold" onclick="openDemandaForm()">+ Nova demanda</button></div>
+      <div class="srow">
+        <input id="q-dem" placeholder="Buscar demanda..." oninput="renderDemandas()">
+        <select id="f-status-dem" onchange="renderDemandas()"><option value="">Todos os status</option><option>Pendente</option><option>Em Andamento</option><option>Concluída</option><option>Cancelada</option></select>
+        <select id="f-prio-dem" onchange="renderDemandas()"><option value="">Todas prioridades</option><option>Alta</option><option>Média</option><option>Baixa</option></select>
+      </div>
+      <div id="demandas-list"></div>
+    </div>
+
+    <!-- TAREFAS -->
+    <div id="page-tarefas" class="page">
+      <div class="sec-hdr"><h2>Tarefas</h2><button class="btn btn-gold" onclick="openTarForm()">+ Nova tarefa</button></div>
+      <div class="srow">
+        <input id="q-tar" placeholder="Buscar tarefa..." oninput="renderTar()">
+        <select id="f-prio-tar" onchange="renderTar()"><option value="">Todas prioridades</option><option>Alta</option><option>Média</option><option>Baixa</option></select>
+      </div>
+      <div class="kanban" id="kanban-board"></div>
+    </div>
+
+    <!-- CLIENTES -->
+    <div id="page-clientes" class="page">
+      <div class="sec-hdr"><h2>Clientes</h2><button class="btn btn-gold" onclick="openCliForm()">+ Novo cliente</button></div>
+      <div class="srow">
+        <input id="q-cli" placeholder="Buscar nome, CPF/CNPJ ou e-mail..." oninput="renderCli()">
+        <select id="f-tipo-cli" onchange="renderCli()"><option value="">PF e PJ</option><option>PF</option><option>PJ</option></select>
+      </div>
+      <div class="tw"><table class="tbl"><thead><tr><th style="width:24%">Nome</th><th style="width:14%">CPF/CNPJ</th><th style="width:7%">Tipo</th><th style="width:13%">Telefone</th><th style="width:19%">E-mail</th><th style="width:10%">Processos</th><th style="width:13%">Ações</th></tr></thead><tbody id="tbl-cli"></tbody></table></div>
+    </div>
+
+    <!-- CAMPOS -->
+    <div id="page-campos" class="page">
+      <div class="sec-hdr"><h2>Campos personalizados</h2></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="tw"><div class="tw-hdr">Processos<button class="btn btn-sm" style="margin-left:auto" onclick="openCampoForm('proc')">+ Adicionar</button></div><div id="campos-proc" style="padding:8px 14px"></div></div>
+        <div class="tw"><div class="tw-hdr">Clientes<button class="btn btn-sm" style="margin-left:auto" onclick="openCampoForm('cli')">+ Adicionar</button></div><div id="campos-cli" style="padding:8px 14px"></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- PAINEL NOTIFICAÇÕES -->
+<div class="notif-panel" id="notif-panel">
+  <div class="notif-panel-hdr">
+    <div class="notif-panel-title">Notificações</div>
+    <button class="btn btn-sm" onclick="marcarTodasLidas()">Limpar</button>
+    <button class="btn btn-icon" onclick="toggleNotif()">✕</button>
+  </div>
+  <div class="notif-list" id="notif-list"></div>
+</div>
+
+<!-- ══ MODAIS ══ -->
+
+<!-- EVENTO -->
+<div class="overlay" id="ov-evento">
+<div class="modal" style="max-width:560px">
+  <div class="modal-hdr"><div class="modal-title" id="evento-modal-title">Novo Evento</div><button class="btn btn-icon" onclick="closeOv('ov-evento')">✕</button></div>
+  <div class="modal-body">
+    <div class="frow"><div class="fg"><label>Tipo</label><select id="ev-tipo"><option value="prazo">Prazo</option><option value="audiencia">Audiência</option><option value="reuniao">Reunião</option><option value="diligencia">Diligência</option><option value="outro">Outro</option></select></div><div class="fg"><label>Processo vinculado</label><select id="ev-proc"><option value="">Nenhum</option></select></div></div>
+    <div class="fg"><label>Título</label><input id="ev-titulo" placeholder="Ex: Audiência de instrução"></div>
+    <div class="frow"><div class="fg"><label>Data</label><input id="ev-data" type="date"></div><div class="fg"><label>Hora</label><input id="ev-hora" type="time" value="09:00"></div></div>
+    <div class="fg"><label>Descrição / Local</label><input id="ev-desc" placeholder="Ex: 2ª Vara de Família — Sala 3"></div>
+    <div class="frow"><div class="fg"><label>Cor</label><input id="ev-cor" type="color" value="#c9a84c" style="height:36px;padding:2px;cursor:pointer"></div><div class="fg"><label>Notificar com antecedência (dias)</label><input id="ev-notif" type="number" value="2" min="0" max="30"></div></div>
+  </div>
+  <div class="modal-footer"><button class="btn" onclick="closeOv('ov-evento')">Cancelar</button><button class="btn btn-gold" onclick="saveEvento()">Salvar</button></div>
+</div>
+</div>
+
+<!-- PROCESSO -->
+<div class="overlay" id="ov-proc">
+<div class="modal" style="max-width:620px">
+  <div class="modal-hdr"><div class="modal-title" id="proc-modal-title">Novo Processo</div><button class="btn btn-icon" onclick="closeOv('ov-proc')">✕</button></div>
+  <div class="modal-body">
+    <div class="frow"><div class="fg"><label>Nº do Processo</label><input id="pm-num" placeholder="0000000-00.0000.0.00.0000"></div><div class="fg"><label>Área</label><select id="pm-area"><option>FAMILIA</option><option>CRIMINAL</option><option>INVENTARIO</option><option>PREVIDENCIARIO</option><option>CIVEL</option><option>TRABALHISTA</option><option>TRIBUTARIO</option></select></div></div>
+    <div class="fg"><label>Autor / Cliente</label><input id="pm-autor" list="dl-cli-names"><datalist id="dl-cli-names"></datalist></div>
+    <div class="fg"><label>Réu / Polo Passivo</label><textarea id="pm-reu" style="min-height:50px"></textarea></div>
+    <div class="fg"><label>Fórum / Vara / Competência</label><input id="pm-forum"></div>
+    <div class="frow"><div class="fg"><label>Modalidade</label><select id="pm-modal"><option>PROCESSO PRINCIPAL</option><option>DESDOBRAMENTO</option></select></div><div class="fg"><label>Sistema</label><select id="pm-sistema"><option>ONLINEPJE</option><option>JUSTIÇA FEDERAL 2ª REGIÃO</option><option>AREA RESTRITA - OAB/RJ</option><option>FÍSICO</option></select></div></div>
+    <div class="frow"><div class="fg"><label>Status</label><select id="pm-status"><option>ATIVOS</option><option>PENDENTE</option><option>EM ANDAMENTO</option><option>FINALIZADO</option></select></div><div class="fg"><label>Valor da Causa</label><input id="pm-valor" placeholder="R$0,00"></div></div>
+    <div id="pm-custom-fields"></div>
+  </div>
+  <div class="modal-footer"><button class="btn" onclick="closeOv('ov-proc')">Cancelar</button><button class="btn btn-gold" onclick="saveProc()">Salvar</button></div>
+</div>
+</div>
+
+<!-- ANDAMENTO -->
+<div class="overlay" id="ov-and">
+<div class="modal">
+  <div class="modal-hdr"><div class="modal-title" id="and-modal-title">Novo Andamento</div><button class="btn btn-icon" onclick="closeOv('ov-and')">✕</button></div>
+  <div class="modal-body">
+    <div class="frow"><div class="fg"><label>Processo</label><select id="am-proc"></select></div><div class="fg"><label>Data</label><input id="am-data" type="date"></div></div>
+    <div class="frow"><div class="fg"><label>Tipo</label><input id="am-tipo" placeholder="Ex: Audiência, Decisão..."></div><div class="fg"><label>Responsável</label><input id="am-resp"></div></div>
+    <div class="fg"><label>Descrição / Despacho</label><textarea id="am-desc" style="min-height:100px"></textarea></div>
+  </div>
+  <div class="modal-footer"><button class="btn" onclick="closeOv('ov-and')">Cancelar</button><button class="btn btn-gold" onclick="saveAnd()">Salvar</button></div>
+</div>
+</div>
+
+<!-- TAREFA -->
+<div class="overlay" id="ov-tar">
+<div class="modal">
+  <div class="modal-hdr"><div class="modal-title" id="tar-modal-title">Nova Tarefa</div><button class="btn btn-icon" onclick="closeOv('ov-tar')">✕</button></div>
+  <div class="modal-body">
+    <div class="fg"><label>Título da Tarefa</label><input id="tm-titulo"></div>
+    <div class="frow"><div class="fg"><label>Processo vinculado</label><select id="tm-proc"><option value="">Nenhum</option></select></div><div class="fg"><label>Responsável</label><input id="tm-resp"></div></div>
+    <div class="frow"><div class="fg"><label>Prazo</label><input id="tm-prazo" type="date"></div><div class="fg"><label>Prioridade</label><select id="tm-prio"><option>Alta</option><option>Média</option><option>Baixa</option></select></div></div>
+    <div class="fg"><label>Status</label><select id="tm-status"><option>Pendente</option><option>Em Andamento</option><option>Aguardando Retorno</option><option>Concluída</option></select></div>
+    <div class="fg"><label>Observações</label><textarea id="tm-obs"></textarea></div>
+  </div>
+  <div class="modal-footer"><button class="btn" onclick="closeOv('ov-tar')">Cancelar</button><button class="btn btn-gold" onclick="saveTar()">Salvar</button></div>
+</div>
+</div>
+
+<!-- DEMANDA -->
+<div class="overlay" id="ov-demanda">
+<div class="modal" style="max-width:620px">
+  <div class="modal-hdr"><div class="modal-title" id="demanda-modal-title">Nova Demanda</div><button class="btn btn-icon" onclick="closeOv('ov-demanda')">✕</button></div>
+  <div class="modal-body">
+    <div class="fg"><label>Título</label><input id="dm-titulo"></div>
+    <div class="frow"><div class="fg"><label>Processo vinculado</label><select id="dm-proc"><option value="">Nenhum</option></select></div><div class="fg"><label>Responsável</label><input id="dm-resp"></div></div>
+    <div class="frow"><div class="fg"><label>Status</label><select id="dm-status"><option>Pendente</option><option>Em Andamento</option><option>Concluída</option><option>Cancelada</option></select></div><div class="fg"><label>Prioridade</label><select id="dm-prio"><option>Alta</option><option>Média</option><option>Baixa</option></select></div></div>
+    <div class="frow"><div class="fg"><label>Data de início</label><input id="dm-inicio" type="date"></div><div class="fg"><label>Prazo final</label><input id="dm-prazo" type="date"></div></div>
+    <div class="fg"><label>Descrição</label><textarea id="dm-desc"></textarea></div>
+    <div class="fg"><label>Etapas (uma por linha)</label><textarea id="dm-etapas" placeholder="Coletar documentos&#10;Protocolar petição&#10;Aguardar resposta"></textarea></div>
+  </div>
+  <div class="modal-footer"><button class="btn" onclick="closeOv('ov-demanda')">Cancelar</button><button class="btn btn-gold" onclick="saveDemanda()">Salvar</button></div>
+</div>
+</div>
+
+<!-- CLIENTE -->
+<div class="overlay" id="ov-cli">
+<div class="modal">
+  <div class="modal-hdr"><div class="modal-title" id="cli-modal-title">Novo Cliente</div><button class="btn btn-icon" onclick="closeOv('ov-cli')">✕</button></div>
+  <div class="modal-body">
+    <div class="frow"><div class="fg"><label>Nome / Razão Social</label><input id="cm-nome"></div><div class="fg"><label>Tipo</label><select id="cm-tipo"><option>PF</option><option>PJ</option></select></div></div>
+    <div class="frow"><div class="fg"><label>CPF / CNPJ</label><input id="cm-doc"></div><div class="fg"><label>Telefone</label><input id="cm-tel"></div></div>
+    <div class="frow"><div class="fg"><label>E-mail</label><input id="cm-email" type="email"></div><div class="fg"><label>Data Nasc./Fundação</label><input id="cm-nasc" type="date"></div></div>
+    <div class="fg"><label>Endereço</label><input id="cm-end"></div>
+    <div class="fg"><label>Observações</label><textarea id="cm-obs"></textarea></div>
+    <div id="cm-custom-fields"></div>
+  </div>
+  <div class="modal-footer"><button class="btn" onclick="closeOv('ov-cli')">Cancelar</button><button class="btn btn-gold" onclick="saveCli()">Salvar</button></div>
+</div>
+</div>
+
+<!-- CAMPO -->
+<div class="overlay" id="ov-campo">
+<div class="modal" style="max-width:420px">
+  <div class="modal-hdr"><div class="modal-title">Novo Campo Personalizado</div><button class="btn btn-icon" onclick="closeOv('ov-campo')">✕</button></div>
+  <div class="modal-body">
+    <input type="hidden" id="campo-entity">
+    <div class="fg"><label>Nome do Campo</label><input id="campo-nome"></div>
+    <div class="fg"><label>Tipo</label><select id="campo-tipo" onchange="$('campo-opcoes-wrap').style.display=this.value==='select'?'block':'none'"><option value="text">Texto</option><option value="textarea">Texto longo</option><option value="date">Data</option><option value="number">Número</option><option value="select">Lista (opções)</option></select></div>
+    <div class="fg" id="campo-opcoes-wrap" style="display:none"><label>Opções (uma por linha)</label><textarea id="campo-opcoes" style="min-height:72px"></textarea></div>
+  </div>
+  <div class="modal-footer"><button class="btn" onclick="closeOv('ov-campo')">Cancelar</button><button class="btn btn-gold" onclick="saveCampo()">Criar campo</button></div>
+</div>
+</div>
+
+<!-- DETALHE PROCESSO -->
+<div class="overlay" id="ov-det">
+<div class="modal" style="max-width:700px">
+  <div class="modal-hdr"><div class="modal-title" id="det-title" style="font-size:13px;font-family:'Jost',sans-serif;font-weight:400">Processo</div><button class="btn btn-icon" onclick="closeOv('ov-det')">✕</button></div>
+  <div class="modal-body" id="det-body"></div>
+  <div class="modal-footer" id="det-footer"></div>
+</div>
+</div>
+
+<!-- CNJ -->
+<div class="overlay" id="ov-cnj">
+<div class="modal" style="max-width:640px">
+  <div class="modal-hdr"><div class="modal-title">Consulta CNJ / DataJud</div><button class="btn btn-icon" onclick="closeOv('ov-cnj')">✕</button></div>
+  <div class="modal-body">
+    <div class="fg"><label>Número do Processo (formato CNJ)</label>
+      <div style="display:flex;gap:8px"><input id="cnj-input" placeholder="0000000-00.0000.8.19.0000" style="flex:1"><button class="btn btn-blue" onclick="consultarCNJ()">Consultar</button></div>
+      <div style="font-size:10px;color:var(--txt3);margin-top:4px">Suporte: TJRJ, TJSP, TJMG, TJRS, TRF1–5, TST</div>
+    </div>
+    <div id="cnj-result"></div>
+  </div>
+  <div class="modal-footer"><button class="btn" onclick="closeOv('ov-cnj')">Fechar</button><button class="btn btn-gold" id="cnj-importar" style="display:none" onclick="importarAndamentos()">Importar andamentos</button></div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ══════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════
+let DB={};
+let editId={proc:null,and:null,tar:null,cli:null,evento:null,demanda:null};
+let currentPage='dash';
+let calYear=new Date().getFullYear(), calMonth=new Date().getMonth();
+let selectedDay=null;
+let cArea=null,cStatus=null;
+let cnjLastData=null;
+let notifUnread=[];
+
+// ══════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════
+function $(id){return document.getElementById(id)}
+function val(id){const e=$(id);return e?e.value.trim():'';}
+function setVal(id,v){const e=$(id);if(e)e.value=v===undefined||v===null?'':v;}
+function numShort(n,l=26){return n&&n.length>l?n.substring(0,l)+'…':n;}
+function fmtDate(d){if(!d||d==='—')return'—';try{const[y,m,dd]=d.split('-');return`${dd}/${m}/${y}`;}catch{return d;}}
+function today(){return new Date().toISOString().split('T')[0];}
+function parseVal(v){return parseFloat((v||'').replace(/[R$\s.]/g,'').replace(',','.'))||0;}
+function daysUntil(d){if(!d)return 999;const t=new Date();t.setHours(0,0,0,0);const x=new Date(d+'T00:00:00');return Math.round((x-t)/86400000);}
+function showToast(msg,type='success'){const t=$('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.className='toast',2800);}
+function closeOv(id){$(id).classList.remove('open');}
+function openOv(id){$(id).classList.add('open');}
+function getProc(id){return(DB.proc||[]).find(p=>p.id===id);}
+
+function pillArea(a){const m={FAMILIA:'p-familia',CRIMINAL:'p-criminal',INVENTARIO:'p-inventario',PREVIDENCIARIO:'p-previdenciario',CIVEL:'p-civel',TRABALHISTA:'p-trabalhista',TRIBUTARIO:'p-tributario'};return`<span class="pill ${m[a]||'p-familia'}">${a}</span>`;}
+function pillStatus(s){const k=(s||'').toLowerCase().replace(/ /g,'-');const cls={ativos:'p-ativos','em-andamento':'p-em-andamento',pendente:'p-pendente','aguardando-retorno':'p-aguardando-retorno',finalizado:'p-finalizado','concluída':'p-concluida'}[k]||'p-pendente';return`<span class="pill ${cls}">${s}</span>`;}
+function pillPrio(p){return`<span class="pill ${p==='Alta'?'p-alta':p==='Média'?'p-media':'p-baixa'}">${p}</span>`;}
+function pillModal(m){return`<span class="pill ${m==='PROCESSO PRINCIPAL'?'p-principal':'p-desdobramento'}">${m==='PROCESSO PRINCIPAL'?'PRINCIPAL':'DESDOBR.'}</span>`;}
+function evTipoLabel(t){return{prazo:'Prazo',audiencia:'Audiência',reuniao:'Reunião',diligencia:'Diligência',outro:'Outro'}[t]||t;}
+function evTipoColor(t){return{prazo:'var(--red)',audiencia:'var(--blue)',reuniao:'var(--gold)',diligencia:'var(--purple)',outro:'var(--txt3)'}[t]||'var(--txt3)';}
+
+// ══════════════════════════════════════════════
+// API
+// ══════════════════════════════════════════════
+async function api(method,path,body){
+  const opts={method,headers:{'Content-Type':'application/json'}};
+  if(body)opts.body=JSON.stringify(body);
+  const r=await fetch(path,opts);
+  return r.json();
+}
+async function loadDB(){
+  DB=await api('GET','/api/db');
+  updateBadges();
+  buildNotifications();
+}
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function goPage(el,p){
+  document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.page').forEach(s=>s.classList.remove('active'));
+  $('page-'+p).classList.add('active');
+  currentPage=p;
+  const titles={dash:'Dashboard',agenda:'Agenda & Prazos',processos:'Processos',andamentos:'Andamentos',demandas:'Demandas',tarefas:'Tarefas',clientes:'Clientes',campos:'Campos Personalizados'};
+  $('tbtitle').textContent=titles[p]||p;
+  const renders={dash:renderDash,agenda:renderAgenda,processos:renderProc,andamentos:renderAnd,demandas:renderDemandas,tarefas:renderTar,clientes:renderCli,campos:renderCampos};
+  (renders[p]||renderDash)();
+}
+function ctxAdd(){
+  const m={dash:openProcForm,agenda:openEventoForm,processos:openProcForm,andamentos:openAndForm,demandas:openDemandaForm,tarefas:openTarForm,clientes:openCliForm,campos:()=>openCampoForm('proc')};
+  (m[currentPage]||openProcForm)();
+}
+function updateBadges(){
+  $('bdg-proc').textContent=(DB.proc||[]).length;
+  $('bdg-tar').textContent=(DB.tar||[]).filter(t=>t.status!=='Concluída').length;
+  $('bdg-cli').textContent=(DB.cli||[]).length;
+  $('bdg-dem').textContent=(DB.demandas||[]).filter(d=>d.status!=='Concluída'&&d.status!=='Cancelada').length;
+  const urgentes=(DB.eventos||[]).filter(e=>daysUntil(e.data)>=0&&daysUntil(e.data)<=7).length;
+  $('bdg-agenda').textContent=urgentes;
+}
+
+// ══════════════════════════════════════════════
+// NOTIFICATIONS
+// ══════════════════════════════════════════════
+function buildNotifications(){
+  notifUnread=[];
+  const ev=DB.eventos||[];
+  ev.forEach(e=>{
+    const d=daysUntil(e.data);
+    if(d>=0&&d<=7){
+      const urgencia=d===0?'HOJE':d===1?'AMANHÃ':`em ${d} dias`;
+      notifUnread.push({id:'ev-'+e.id,tipo:evTipoLabel(e.tipo),titulo:e.titulo,desc:urgencia+' — '+fmtDate(e.data)+(e.hora?' às '+e.hora:''),cor:e.cor||evTipoColor(e.tipo),urgencia:d});
+    }
+  });
+  (DB.tar||[]).filter(t=>t.status!=='Concluída'&&t.prazo&&daysUntil(t.prazo)>=0&&daysUntil(t.prazo)<=3).forEach(t=>{
+    const d=daysUntil(t.prazo);
+    notifUnread.push({id:'tar-'+t.id,tipo:'Tarefa',titulo:t.titulo,desc:(d===0?'Vence hoje':d===1?'Vence amanhã':`Vence em ${d} dias`)+'  — '+fmtDate(t.prazo),cor:'var(--amber)',urgencia:d});
+  });
+  notifUnread.sort((a,b)=>a.urgencia-b.urgencia);
+  $('notif-dot').className='notif-dot'+(notifUnread.length?' active':'');
+  renderNotifPanel();
+}
+function renderNotifPanel(){
+  const list=$('notif-list');
+  if(!notifUnread.length){list.innerHTML='<div class="empty" style="padding:24px">Sem notificações pendentes</div>';return;}
+  list.innerHTML=notifUnread.map(n=>`<div class="notif-item unread" onclick="toggleNotif()">
+    <div class="notif-item-hdr"><span style="width:8px;height:8px;border-radius:50%;background:${n.cor};display:inline-block"></span><span class="notif-tipo" style="background:rgba(201,168,76,.1);color:var(--txt3);border:1px solid var(--bdr);padding:1px 6px;border-radius:3px">${n.tipo}</span></div>
+    <div class="notif-titulo">${n.titulo}</div>
+    <div class="notif-desc">${n.desc}</div>
+  </div>`).join('');
+}
+function toggleNotif(){$('notif-panel').classList.toggle('open');}
+function marcarTodasLidas(){notifUnread=[];$('notif-dot').className='notif-dot';renderNotifPanel();}
+
+// ══════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════
+function renderDash(){
+  if(!DB.proc)return;
+  const ativos=(DB.proc).filter(p=>p.status!=='FINALIZADO').length;
+  const pend=(DB.tar||[]).filter(t=>t.status!=='Concluída').length;
+  const alta=(DB.tar||[]).filter(t=>t.status!=='Concluída'&&t.prio==='Alta').length;
+  const prox=(DB.eventos||[]).filter(e=>daysUntil(e.data)>=0&&daysUntil(e.data)<=7).length;
+  let tv=0;DB.proc.forEach(p=>{tv+=parseVal(p.valor);});
+  $('k-total').textContent=DB.proc.length;
+  $('k-ativos').textContent=ativos;
+  $('k-pend').textContent=pend;
+  $('k-pend-d').textContent=alta+' alta prioridade';
+  $('k-eventos').textContent=prox;
+  $('k-areas').textContent='em '+[...new Set(DB.proc.map(p=>p.area))].length+' áreas';
+  $('k-valor').textContent='R$ '+tv.toLocaleString('pt-BR',{minimumFractionDigits:2});
+  const ac={},sc={};
+  DB.proc.forEach(p=>{ac[p.area]=(ac[p.area]||0)+1;sc[p.status]=(sc[p.status]||0)+1;});
+  const pal=['#c9a84c','#e07070','#8ab0e0','#d080b0','#5aab70','#d4a017','#b090e0'];
+  if(cArea)cArea.destroy();
+  cArea=new Chart($('cArea'),{type:'doughnut',data:{labels:Object.keys(ac),datasets:[{data:Object.values(ac),backgroundColor:pal,borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'58%'}});
+  if(cStatus)cStatus.destroy();
+  cStatus=new Chart($('cStatus'),{type:'bar',data:{labels:Object.keys(sc),datasets:[{data:Object.values(sc),backgroundColor:'#c9a84c',borderRadius:3,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#8a7060',font:{size:9}},grid:{display:false}},y:{ticks:{color:'#8a7060',stepSize:1},grid:{color:'rgba(201,168,76,0.07)'}}}}});
+
+  const ev=(DB.eventos||[]).filter(e=>daysUntil(e.data)>=0).sort((a,b)=>a.data.localeCompare(b.data)).slice(0,5);
+  $('dash-eventos').innerHTML=ev.length?`<table class="tbl"><tbody>`+ev.map(e=>{const d=daysUntil(e.data);return`<tr><td style="width:8px;padding:7px 6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${e.cor||evTipoColor(e.tipo)}"></span></td><td style="font-size:11px">${e.titulo}</td><td style="font-size:10px;color:var(--txt3)">${fmtDate(e.data)}</td><td style="font-size:10px">${d===0?'<span style="color:var(--red)">Hoje</span>':d===1?'<span style="color:var(--amber)">Amanhã</span>':`<span style="color:var(--txt3)">${d}d</span>`}</td></tr>`;}).join('')+`</tbody></table>`:'<div class="empty" style="padding:16px">Sem eventos próximos</div>';
+
+  const turg=(DB.tar||[]).filter(t=>t.status!=='Concluída'&&t.prio==='Alta').slice(0,5);
+  $('dash-tarefas').innerHTML=turg.length?`<table class="tbl"><tbody>`+turg.map(t=>{const d=daysUntil(t.prazo);return`<tr><td style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px">${t.titulo}</td><td>${pillPrio(t.prio)}</td><td style="font-size:10px;color:${d<0?'var(--red)':d<=2?'var(--amber)':'var(--txt3)'}">${t.prazo?fmtDate(t.prazo):'—'}</td></tr>`;}).join('')+`</tbody></table>`:'<div class="empty" style="padding:16px">Sem tarefas urgentes</div>';
+  updateBadges();
+}
+
+// ══════════════════════════════════════════════
+// AGENDA / CALENDÁRIO
+// ══════════════════════════════════════════════
+function renderAgenda(){
+  renderCalendar();
+  renderUpcoming();
+  if(selectedDay)renderDayView(selectedDay);
+  else{const t=today();selectedDay=t;renderDayView(t);}
+}
+function calNav(dir){calMonth+=dir;if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
+function calToday(){calYear=new Date().getFullYear();calMonth=new Date().getMonth();renderCalendar();}
+
+function renderCalendar(){
+  const months=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  $('cal-title').textContent=months[calMonth]+' '+calYear;
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const daysInPrev=new Date(calYear,calMonth,0).getDate();
+  const todayStr=today();
+  const evMap={};
+  (DB.eventos||[]).forEach(e=>{if(!evMap[e.data])evMap[e.data]=[];evMap[e.data].push(e);});
+
+  let html='';
+  for(let i=0;i<firstDay;i++){
+    const d=daysInPrev-firstDay+1+i;
+    html+=`<div class="cal-day other-month"><div class="cal-day-num">${d}</div></div>`;
+  }
+  for(let d=1;d<=daysInMonth;d++){
+    const ds=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=ds===todayStr;
+    const evs=evMap[ds]||[];
+    html+=`<div class="cal-day${isToday?' today':''}" onclick="selectDay('${ds}')">
+      <div class="cal-day-num">${d}</div>
+      ${evs.slice(0,3).map(e=>`<div class="cal-event" style="background:${(e.cor||evTipoColor(e.tipo))+'22'};color:${e.cor||evTipoColor(e.tipo)};border-left:2px solid ${e.cor||evTipoColor(e.tipo)}" onclick="event.stopPropagation();openEventoForm(${e.id})" title="${e.titulo}">${e.hora?e.hora+' ':''} ${e.titulo}</div>`).join('')}
+      ${evs.length>3?`<div style="font-size:9px;color:var(--txt3);padding-left:4px">+${evs.length-3} mais</div>`:''}
+    </div>`;
+  }
+  const remaining=(7-((firstDay+daysInMonth)%7))%7;
+  for(let i=1;i<=remaining;i++){
+    html+=`<div class="cal-day other-month"><div class="cal-day-num">${i}</div></div>`;
+  }
+  $('cal-grid').innerHTML=html;
+}
+
+function selectDay(ds){
+  selectedDay=ds;
+  const[y,m,d]=ds.split('-');
+  const months=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  $('day-view-title').innerHTML=`<span>${d} de ${months[parseInt(m)-1]} de ${y}</span><button class="btn btn-sm btn-gold" onclick="openEventoFormDia('${ds}')" style="margin-left:auto">+ Evento</button>`;
+  renderDayView(ds);
+}
+function renderDayView(ds){
+  const evs=(DB.eventos||[]).filter(e=>e.data===ds).sort((a,b)=>(a.hora||'').localeCompare(b.hora||''));
+  const tars=(DB.tar||[]).filter(t=>t.prazo===ds&&t.status!=='Concluída');
+  const items=[...evs.map(e=>({...e,_kind:'evento'})),...tars.map(t=>({...t,_kind:'tarefa',hora:''}))].sort((a,b)=>(a.hora||'99:99').localeCompare(b.hora||'99:99'));
+  if(!items.length){$('day-events-list').innerHTML='<div style="font-size:12px;color:var(--txt3);padding:8px 0">Nenhum evento ou tarefa</div>';return;}
+  $('day-events-list').innerHTML=items.map(item=>{
+    if(item._kind==='evento'){
+      const p=getProc(item.procId);
+      return`<div class="day-event-item">
+        <div class="dev-time">${item.hora||'—'}</div>
+        <div class="dev-bar" style="background:${item.cor||evTipoColor(item.tipo)}"></div>
+        <div class="dev-body">
+          <div class="dev-titulo">${item.titulo}</div>
+          <div class="dev-meta">${evTipoLabel(item.tipo)}${p?' · '+numShort(p.num,20):''}${item.descricao?' · '+item.descricao:''}</div>
+          <div class="dev-actions">
+            <button class="btn btn-xs" onclick="openEventoForm(${item.id})">Editar</button>
+            <button class="btn btn-xs btn-danger" onclick="delEvento(${item.id})">✕</button>
+          </div>
+        </div>
+      </div>`;
+    }else{
+      return`<div class="day-event-item">
+        <div class="dev-time" style="color:var(--amber)">Tarefa</div>
+        <div class="dev-bar" style="background:var(--amber)"></div>
+        <div class="dev-body">
+          <div class="dev-titulo">${item.titulo}</div>
+          <div class="dev-meta">${pillPrio(item.prio)} · ${item.resp||''}</div>
+          <div class="dev-actions">
+            <button class="btn btn-xs" onclick="openTarForm(${item.id})">Editar</button>
+            <button class="btn btn-xs btn-green" onclick="concluirTar(${item.id})">✓ Concluir</button>
+          </div>
+        </div>
+      </div>`;
+    }
+  }).join('');
+}
+
+function renderUpcoming(){
+  const prox=(DB.eventos||[]).filter(e=>daysUntil(e.data)>=0&&daysUntil(e.data)<=30)
+    .sort((a,b)=>a.data.localeCompare(b.data));
+  const el=$('upcoming-list');
+  if(!prox.length){el.innerHTML='<div class="empty" style="padding:16px">Nenhum evento nos próximos 30 dias</div>';return;}
+  el.innerHTML=prox.map(e=>{
+    const d=daysUntil(e.data);
+    const dlbl=d===0?'Hoje':d===1?'Amanhã':d+'d';
+    const dcls=d===0?'days-hoje':d<=3?'days-urgente':'days-ok';
+    const p=getProc(e.procId);
+    return`<div class="upcoming-item" onclick="selectDay('${e.data}')">
+      <span style="width:9px;height:9px;border-radius:50%;background:${e.cor||evTipoColor(e.tipo)};flex-shrink:0"></span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${e.titulo}</div>
+        <div style="font-size:10px;color:var(--txt3)">${evTipoLabel(e.tipo)}${p?' · '+numShort(p.num,18):''}${e.hora?' · '+e.hora:''}</div>
+      </div>
+      <span class="upcoming-days ${dcls}">${dlbl}</span>
+    </div>`;
+  }).join('');
+}
+
+function openEventoFormDia(ds){openEventoForm(null,ds);}
+function openEventoForm(id=null,defaultDate=null){
+  editId.evento=id;
+  $('evento-modal-title').textContent=id?'Editar Evento':'Novo Evento';
+  const e=id?(DB.eventos||[]).find(x=>x.id===id):{};
+  const sel=$('ev-proc');sel.innerHTML='<option value="">Nenhum</option>';
+  (DB.proc||[]).forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=numShort(p.num,35);sel.appendChild(o);});
+  setVal('ev-tipo',e.tipo||'audiencia');setVal('ev-proc',e.procId||'');setVal('ev-titulo',e.titulo);
+  setVal('ev-data',e.data||(defaultDate||today()));setVal('ev-hora',e.hora||'09:00');
+  setVal('ev-desc',e.descricao);setVal('ev-cor',e.cor||'#c9a84c');setVal('ev-notif',e.notificadoDias??2);
+  openOv('ov-evento');
+}
+async function saveEvento(){
+  const id=editId.evento;
+  const obj={procId:parseInt(val('ev-proc'))||null,tipo:val('ev-tipo'),titulo:val('ev-titulo'),data:val('ev-data'),hora:val('ev-hora'),descricao:val('ev-desc'),notificar:true,notificadoDias:parseInt(val('ev-notif'))||1,cor:val('ev-cor')};
+  if(!obj.titulo){showToast('Informe o título','error');return;}
+  if(!obj.data){showToast('Informe a data','error');return;}
+  if(id){await api('PUT',`/api/eventos/${id}`,obj);}else{await api('POST','/api/eventos',obj);}
+  await loadDB();closeOv('ov-evento');renderAgenda();showToast(id?'Evento atualizado!':'Evento criado!');
+}
+async function delEvento(id){
+  if(!confirm('Excluir este evento?'))return;
+  await api('DELETE',`/api/eventos/${id}`);
+  await loadDB();renderAgenda();showToast('Evento excluído','error');
+}
+
+// ══════════════════════════════════════════════
+// PROCESSOS
+// ══════════════════════════════════════════════
+function renderProc(){
+  const q=val('q-proc').toLowerCase(),fa=val('f-area-proc'),fs=val('f-status-proc');
+  const f=(DB.proc||[]).filter(p=>(!q||(p.num+p.autor+(p.forum||'')+(p.reu||'')).toLowerCase().includes(q))&&(!fa||p.area===fa)&&(!fs||p.status===fs));
+  $('tbl-proc').innerHTML=f.length?f.map(p=>`<tr>
+    <td style="font-size:11px;cursor:pointer" onclick="openDetalhes(${p.id})" title="${p.num}">${numShort(p.num)}</td>
+    <td title="${p.autor}">${numShort(p.autor,16)}</td>
+    <td>${pillArea(p.area)}</td><td>${pillModal(p.modal)}</td><td>${pillStatus(p.status)}</td>
+    <td style="font-size:11px">${p.valor&&p.valor!=='R$0,00'&&p.valor!=='R$00,00'?p.valor:'—'}</td>
+    <td>
+      <div style="display:flex;gap:3px;flex-wrap:wrap">
+        <button class="btn btn-xs" onclick="openDetalhes(${p.id})">Ver</button>
+        <button class="btn btn-xs" onclick="openProcForm(${p.id})">Editar</button>
+        <button class="btn btn-xs btn-green" onclick="openTarFormFromProc(${p.id})" title="Nova tarefa neste processo">+ Tarefa</button>
+        <button class="btn btn-xs btn-danger" onclick="delProc(${p.id})">✕</button>
+      </div>
+    </td></tr>`).join(''):`<tr><td colspan="7" class="empty">Nenhum processo encontrado</td></tr>`;
+}
+function openProcForm(id=null){
+  editId.proc=id;
+  $('proc-modal-title').textContent=id?'Editar Processo':'Novo Processo';
+  const p=id?getProc(id):{};
+  setVal('pm-num',p.num);setVal('pm-area',p.area||'FAMILIA');setVal('pm-autor',p.autor);
+  setVal('pm-reu',p.reu);setVal('pm-forum',p.forum);setVal('pm-modal',p.modal||'PROCESSO PRINCIPAL');
+  setVal('pm-sistema',p.sistema||'ONLINEPJE');setVal('pm-status',p.status||'ATIVOS');setVal('pm-valor',p.valor);
+  const dl=$('dl-cli-names');dl.innerHTML='';
+  (DB.cli||[]).forEach(c=>{const o=document.createElement('option');o.value=c.nome;dl.appendChild(o);});
+  renderCustomFieldsForm('pm-custom-fields','proc',p.custom||{});
+  openOv('ov-proc');
+}
+async function saveProc(){
+  const id=editId.proc;
+  const obj={num:val('pm-num'),area:val('pm-area'),autor:val('pm-autor'),reu:val('pm-reu'),forum:val('pm-forum'),modal:val('pm-modal'),sistema:val('pm-sistema'),status:val('pm-status'),valor:val('pm-valor'),custom:getCustomFieldValues('pm-custom-fields','proc')};
+  if(!obj.num){showToast('Informe o número do processo','error');return;}
+  if(id){await api('PUT',`/api/proc/${id}`,obj);}else{await api('POST','/api/proc',obj);}
+  await loadDB();closeOv('ov-proc');renderProc();showToast(id?'Processo atualizado!':'Processo cadastrado!');
+}
+async function delProc(id){
+  if(!confirm('Excluir este processo?'))return;
+  await api('DELETE',`/api/proc/${id}`);
+  await loadDB();renderProc();showToast('Processo excluído','error');
+}
+
+// ══════════════════════════════════════════════
+// ANDAMENTOS
+// ══════════════════════════════════════════════
+function populateAndProc(selectedId){
+  ['am-proc','f-proc-and'].forEach(sid=>{
+    const sel=$(sid);if(!sel)return;
+    const cv=sel.value;
+    sel.innerHTML=sid==='am-proc'?'<option value="">Selecione...</option>':'<option value="">Todos os processos</option>';
+    (DB.proc||[]).forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=numShort(p.num,35);sel.appendChild(o);});
+    if(selectedId)sel.value=selectedId;else sel.value=cv;
+  });
+}
+function renderAnd(){
+  const q=val('q-and').toLowerCase(),fp=val('f-proc-and');
+  const f=(DB.and||[]).filter(a=>(!q||(a.tipo+(a.desc||'')+(a.resp||'')).toLowerCase().includes(q))&&(!fp||String(a.procId)===fp)).sort((a,b)=>b.data.localeCompare(a.data));
+  $('timeline-list').innerHTML=f.length?f.map(a=>{
+    const p=getProc(a.procId);
+    return`<div class="tl-item"><div class="tl-dot"></div><div class="tl-body">
+      <div class="tl-hdr"><span class="tl-tipo">${a.tipo}</span><span class="tl-proc">${p?numShort(p.num,22):''}</span><span class="tl-date">${fmtDate(a.data)}${a.resp?' · '+a.resp:''}</span></div>
+      <div class="tl-desc">${a.desc||''}</div>
+      <div class="tl-actions"><button class="btn btn-sm" onclick="openAndForm(${a.id})">Editar</button><button class="btn btn-sm btn-danger" onclick="delAnd(${a.id})">Excluir</button></div>
+    </div></div>`;
+  }).join(''):`<div class="empty">Nenhum andamento encontrado</div>`;
+}
+function openAndForm(id=null,procId=null){
+  editId.and=id;populateAndProc(procId);
+  $('and-modal-title').textContent=id?'Editar Andamento':'Novo Andamento';
+  const a=id?(DB.and||[]).find(x=>x.id===id):{};
+  setVal('am-proc',a.procId||procId||'');setVal('am-data',a.data||today());
+  setVal('am-tipo',a.tipo||'');setVal('am-resp',a.resp||'Dr. PSA');setVal('am-desc',a.desc||'');
+  openOv('ov-and');
+}
+async function saveAnd(){
+  const id=editId.and;
+  const obj={procId:parseInt(val('am-proc')),data:val('am-data'),tipo:val('am-tipo'),resp:val('am-resp'),desc:val('am-desc')};
+  if(!obj.procId){showToast('Selecione um processo','error');return;}
+  if(!obj.tipo){showToast('Informe o tipo','error');return;}
+  if(id){await api('PUT',`/api/and/${id}`,obj);}else{await api('POST','/api/and',obj);}
+  await loadDB();closeOv('ov-and');renderAnd();updateBadges();showToast(id?'Andamento atualizado!':'Andamento salvo!');
+}
+async function delAnd(id){
+  if(!confirm('Excluir este andamento?'))return;
+  await api('DELETE',`/api/and/${id}`);
+  await loadDB();renderAnd();updateBadges();showToast('Andamento excluído','error');
+}
+
+// ══════════════════════════════════════════════
+// DEMANDAS
+// ══════════════════════════════════════════════
+function renderDemandas(){
+  const q=val('q-dem').toLowerCase(),fs=val('f-status-dem'),fp=val('f-prio-dem');
+  const f=(DB.demandas||[]).filter(d=>(!q||(d.titulo+(d.descricao||'')+(d.responsavel||'')).toLowerCase().includes(q))&&(!fs||d.status===fs)&&(!fp||d.prioridade===fp));
+  if(!f.length){$('demandas-list').innerHTML='<div class="empty">Nenhuma demanda encontrada</div>';return;}
+  $('demandas-list').innerHTML=f.map(d=>{
+    const p=getProc(d.procId);
+    const etapas=d.etapas||[];
+    const feitas=etapas.filter(e=>e.feito).length;
+    const prog=etapas.length?Math.round(feitas/etapas.length*100):d.progresso||0;
+    return`<div class="demanda-card">
+      <div class="demanda-hdr">
+        <div class="demanda-titulo">${d.titulo}</div>
+        <button class="btn btn-sm" onclick="openDemandaForm(${d.id})">Editar</button>
+        <button class="btn btn-sm btn-danger" onclick="delDemanda(${d.id})">✕</button>
+      </div>
+      <div class="demanda-meta">
+        ${pillStatus(d.status)}${pillPrio(d.prioridade)}
+        ${p?pillArea(p.area):''}
+        ${p?`<span style="font-size:10px;color:var(--txt3)">${numShort(p.num,20)}</span>`:''}
+        ${d.dataPrazo?`<span style="font-size:10px;color:${daysUntil(d.dataPrazo)<0?'var(--red)':daysUntil(d.dataPrazo)<=7?'var(--amber)':'var(--txt3)'}">Prazo: ${fmtDate(d.dataPrazo)}</span>`:''}
+      </div>
+      ${d.descricao?`<div style="font-size:12px;color:var(--txt2);margin-bottom:10px;line-height:1.5">${d.descricao}</div>`:''}
+      <div class="progress-wrap">
+        <div class="progress-lbl"><span>Progresso</span><span>${prog}%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div>
+      </div>
+      ${etapas.length?`<div class="etapas-list">${etapas.map(e=>`<div class="etapa-item" onclick="toggleEtapa(${d.id},${e.id})">
+        <div class="etapa-check${e.feito?' done':''}"></div>
+        <span class="etapa-txt${e.feito?' done':''}">${e.texto}</span>
+      </div>`).join('')}</div>`:''}
+    </div>`;
+  }).join('');
+}
+async function toggleEtapa(demandaId,etapaId){
+  const d=(DB.demandas||[]).find(x=>x.id===demandaId);if(!d)return;
+  const e=(d.etapas||[]).find(x=>x.id===etapaId);if(!e)return;
+  e.feito=!e.feito;
+  const feitas=d.etapas.filter(x=>x.feito).length;
+  d.progresso=Math.round(feitas/d.etapas.length*100);
+  if(d.progresso===100)d.status='Concluída';
+  await api('PUT',`/api/demandas/${demandaId}`,{titulo:d.titulo,procId:d.procId,status:d.status,prioridade:d.prioridade,responsavel:d.responsavel,descricao:d.descricao,etapas:d.etapas,dataInicio:d.dataInicio,dataPrazo:d.dataPrazo,progresso:d.progresso});
+  await loadDB();renderDemandas();
+}
+function openDemandaForm(id=null){
+  editId.demanda=id;
+  $('demanda-modal-title').textContent=id?'Editar Demanda':'Nova Demanda';
+  const sel=$('dm-proc');sel.innerHTML='<option value="">Nenhum</option>';
+  (DB.proc||[]).forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=numShort(p.num,35);sel.appendChild(o);});
+  const d=id?(DB.demandas||[]).find(x=>x.id===id):{};
+  setVal('dm-titulo',d.titulo);setVal('dm-proc',d.procId||'');setVal('dm-resp',d.responsavel||'Dr. PSA');
+  setVal('dm-status',d.status||'Pendente');setVal('dm-prio',d.prioridade||'Média');
+  setVal('dm-inicio',d.dataInicio||today());setVal('dm-prazo',d.dataPrazo||'');
+  setVal('dm-desc',d.descricao||'');
+  setVal('dm-etapas',(d.etapas||[]).map(e=>e.texto).join('\n'));
+  openOv('ov-demanda');
+}
+async function saveDemanda(){
+  const id=editId.demanda;
+  const etapasRaw=val('dm-etapas').split('\n').filter(Boolean);
+  let etapas;
+  if(id){
+    const existing=(DB.demandas||[]).find(x=>x.id===id);
+    etapas=etapasRaw.map((txt,i)=>{const prev=(existing?.etapas||[]).find(e=>e.texto===txt);return prev||{id:i+1,texto:txt,feito:false};});
+  }else{
+    etapas=etapasRaw.map((txt,i)=>({id:i+1,texto:txt,feito:false}));
+  }
+  const feitas=etapas.filter(e=>e.feito).length;
+  const prog=etapas.length?Math.round(feitas/etapas.length*100):0;
+  const obj={titulo:val('dm-titulo'),procId:parseInt(val('dm-proc'))||null,status:val('dm-status'),prioridade:val('dm-prio'),responsavel:val('dm-resp'),descricao:val('dm-desc'),etapas,dataInicio:val('dm-inicio'),dataPrazo:val('dm-prazo'),progresso:prog};
+  if(!obj.titulo){showToast('Informe o título','error');return;}
+  if(id){await api('PUT',`/api/demandas/${id}`,obj);}else{await api('POST','/api/demandas',obj);}
+  await loadDB();closeOv('ov-demanda');renderDemandas();showToast(id?'Demanda atualizada!':'Demanda criada!');
+}
+async function delDemanda(id){
+  if(!confirm('Excluir esta demanda?'))return;
+  await api('DELETE',`/api/demandas/${id}`);
+  await loadDB();renderDemandas();updateBadges();showToast('Demanda excluída','error');
+}
+
+// ══════════════════════════════════════════════
+// TAREFAS — KANBAN
+// ══════════════════════════════════════════════
+const TAR_STATUS=['Pendente','Em Andamento','Aguardando Retorno','Concluída'];
+function renderTar(){
+  const q=val('q-tar').toLowerCase(),fp=val('f-prio-tar');
+  const f=(DB.tar||[]).filter(t=>(!q||(t.titulo+(t.resp||'')).toLowerCase().includes(q))&&(!fp||t.prio===fp));
+  const dotCols={Pendente:'var(--amber)','Em Andamento':'var(--blue)','Aguardando Retorno':'var(--purple)',Concluída:'var(--green)'};
+  $('kanban-board').innerHTML=TAR_STATUS.map(st=>{
+    const items=f.filter(t=>t.status===st);
+    return`<div class="kancol">
+      <div class="kancol-hdr"><span style="width:7px;height:7px;border-radius:50%;background:${dotCols[st]};display:inline-block;flex-shrink:0"></span>${st}<span class="kancol-cnt">${items.length}</span></div>
+      ${items.map(t=>{
+        const d=daysUntil(t.prazo),pc=getProc(t.procId),pc2=d<0?'vencido':d<=3?'proximo':'';
+        return`<div class="kancard" onclick="openTarForm(${t.id})">
+          <div class="ktitulo">${t.titulo}</div>
+          <div class="kmeta">${pillPrio(t.prio)}${pc?`<span style="font-size:9px;color:var(--txt3);overflow:hidden;text-overflow:ellipsis;max-width:80px;white-space:nowrap">${numShort(pc.num,14)}</span>`:''}</div>
+          <div class="kprazo ${pc2}">${t.prazo?'Prazo: '+fmtDate(t.prazo):'Sem prazo'}</div>
+          <div style="font-size:10px;color:var(--txt3);margin-top:2px">${t.resp||''}</div>
+          <div class="kactions">
+            <button class="btn btn-xs" onclick="event.stopPropagation();openTarForm(${t.id})">Editar</button>
+            <button class="btn btn-xs btn-danger" onclick="event.stopPropagation();delTar(${t.id})">✕</button>
+            ${st!=='Concluída'?`<button class="btn btn-xs btn-green" onclick="event.stopPropagation();concluirTar(${t.id})">✓</button>`:''}
+          </div>
+        </div>`;
+      }).join('')}
+      <button class="btn btn-sm" style="width:100%;justify-content:center;margin-top:6px" onclick="openTarForm(null,'${st}')">+ Tarefa</button>
+    </div>`;
+  }).join('');
+}
+function openTarFormFromProc(procId){
+  openTarForm(null,null,procId);
+}
+function openTarForm(id=null,defaultStatus=null,defaultProcId=null){
+  editId.tar=id;
+  $('tar-modal-title').textContent=id?'Editar Tarefa':'Nova Tarefa';
+  const sel=$('tm-proc');sel.innerHTML='<option value="">Nenhum</option>';
+  (DB.proc||[]).forEach(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=numShort(p.num,35);sel.appendChild(o);});
+  const t=id?(DB.tar||[]).find(x=>x.id===id):{};
+  setVal('tm-titulo',t.titulo);setVal('tm-proc',t.procId||(defaultProcId||''));
+  setVal('tm-resp',t.resp||'Dr. PSA');setVal('tm-prazo',t.prazo);
+  setVal('tm-prio',t.prio||'Média');setVal('tm-status',t.status||(defaultStatus||'Pendente'));
+  setVal('tm-obs',t.obs);openOv('ov-tar');
+}
+async function saveTar(){
+  const id=editId.tar;
+  const obj={titulo:val('tm-titulo'),procId:parseInt(val('tm-proc'))||null,resp:val('tm-resp'),prazo:val('tm-prazo'),prio:val('tm-prio'),status:val('tm-status'),obs:val('tm-obs')};
+  if(!obj.titulo){showToast('Informe o título','error');return;}
+  if(id){await api('PUT',`/api/tar/${id}`,obj);}else{await api('POST','/api/tar',obj);}
+  await loadDB();closeOv('ov-tar');renderTar();updateBadges();showToast(id?'Tarefa atualizada!':'Tarefa criada!');
+}
+async function concluirTar(id){
+  const t=(DB.tar||[]).find(x=>x.id===id);if(!t)return;
+  await api('PUT',`/api/tar/${id}`,{...t,status:'Concluída'});
+  await loadDB();renderTar();updateBadges();showToast('Tarefa concluída!');
+}
+async function delTar(id){
+  if(!confirm('Excluir esta tarefa?'))return;
+  await api('DELETE',`/api/tar/${id}`);
+  await loadDB();renderTar();updateBadges();showToast('Tarefa excluída','error');
+}
+
+// ══════════════════════════════════════════════
+// CLIENTES
+// ══════════════════════════════════════════════
+function renderCli(){
+  const q=val('q-cli').toLowerCase(),ft=val('f-tipo-cli');
+  const f=(DB.cli||[]).filter(c=>(!q||(c.nome+(c.doc||'')+(c.email||'')).toLowerCase().includes(q))&&(!ft||c.tipo===ft));
+  $('tbl-cli').innerHTML=f.length?f.map(c=>{
+    const np=(DB.proc||[]).filter(p=>p.autor===c.nome).length;
+    return`<tr><td>${c.nome}</td><td style="font-size:11px;font-family:monospace">${c.doc||'—'}</td>
+      <td><span class="pill ${c.tipo==='PJ'?'p-ativos':'p-pendente'}">${c.tipo}</span></td>
+      <td style="font-size:11px">${c.tel||'—'}</td><td style="font-size:11px;color:var(--txt2)">${c.email||'—'}</td>
+      <td style="text-align:center;color:var(--gold)">${np}</td>
+      <td><div style="display:flex;gap:4px"><button class="btn btn-xs" onclick="openCliForm(${c.id})">Editar</button><button class="btn btn-xs btn-danger" onclick="delCli(${c.id})">✕</button></div></td>
+    </tr>`;
+  }).join(''):`<tr><td colspan="7" class="empty">Nenhum cliente encontrado</td></tr>`;
+}
+function openCliForm(id=null){
+  editId.cli=id;
+  $('cli-modal-title').textContent=id?'Editar Cliente':'Novo Cliente';
+  const c=id?(DB.cli||[]).find(x=>x.id===id):{};
+  setVal('cm-nome',c.nome);setVal('cm-tipo',c.tipo||'PF');setVal('cm-doc',c.doc);
+  setVal('cm-tel',c.tel);setVal('cm-email',c.email);setVal('cm-nasc',c.nasc);
+  setVal('cm-end',c.end);setVal('cm-obs',c.obs);
+  renderCustomFieldsForm('cm-custom-fields','cli',c.custom||{});
+  openOv('ov-cli');
+}
+async function saveCli(){
+  const id=editId.cli;
+  const obj={nome:val('cm-nome'),tipo:val('cm-tipo'),doc:val('cm-doc'),tel:val('cm-tel'),email:val('cm-email'),nasc:val('cm-nasc'),end:val('cm-end'),obs:val('cm-obs'),custom:getCustomFieldValues('cm-custom-fields','cli')};
+  if(!obj.nome){showToast('Informe o nome','error');return;}
+  if(id){await api('PUT',`/api/cli/${id}`,obj);}else{await api('POST','/api/cli',obj);}
+  await loadDB();closeOv('ov-cli');renderCli();updateBadges();showToast(id?'Cliente atualizado!':'Cliente cadastrado!');
+}
+async function delCli(id){
+  if(!confirm('Excluir este cliente?'))return;
+  await api('DELETE',`/api/cli/${id}`);
+  await loadDB();renderCli();updateBadges();showToast('Cliente excluído','error');
+}
+
+// ══════════════════════════════════════════════
+// CAMPOS PERSONALIZADOS
+// ══════════════════════════════════════════════
+function renderCampos(){
+  ['proc','cli'].forEach(e=>{
+    const fields=((DB.campos||{})[e]||[]);
+    const el=$(('campos-'+e));
+    el.innerHTML=fields.length?fields.map((f,i)=>`<div class="cf-item"><span class="cf-name">${f.nome}</span><span class="cf-type">${f.tipo}</span><button class="btn btn-xs btn-danger" onclick="delCampo('${e}',${i})" style="margin-left:auto">✕</button></div>`).join(''):`<div style="font-size:12px;color:var(--txt3);padding:8px 0">Nenhum campo. Clique em "+ Adicionar".</div>`;
+  });
+}
+function openCampoForm(entity){
+  setVal('campo-entity',entity);setVal('campo-nome','');setVal('campo-tipo','text');setVal('campo-opcoes','');
+  $('campo-opcoes-wrap').style.display='none';openOv('ov-campo');
+}
+async function saveCampo(){
+  const entity=val('campo-entity')||$('campo-entity').value;
+  const nome=val('campo-nome'),tipo=val('campo-tipo');
+  if(!nome){showToast('Informe o nome do campo','error');return;}
+  const opcoes=tipo==='select'?val('campo-opcoes').split('\n').filter(Boolean):[];
+  await api('POST','/api/campo',{entity,nome,tipo,opcoes});
+  await loadDB();closeOv('ov-campo');renderCampos();showToast('Campo criado!');
+}
+async function delCampo(entity,i){
+  await api('DELETE',`/api/campo/${entity}/${i}`);
+  await loadDB();renderCampos();showToast('Campo removido','error');
+}
+function renderCustomFieldsForm(containerId,entity,values){
+  const fields=((DB.campos||{})[entity]||[]);
+  const el=$(containerId);if(!el)return;
+  if(!fields.length){el.innerHTML='';return;}
+  el.innerHTML=`<div class="section-divider">Campos personalizados</div>`+fields.map(f=>`<div class="fg"><label>${f.nome}</label>${f.tipo==='select'?`<select id="cf-${entity}-${f.nome}"><option value="">—</option>${f.opcoes.map(o=>`<option ${values[f.nome]===o?'selected':''}>${o}</option>`).join('')}</select>`:f.tipo==='textarea'?`<textarea id="cf-${entity}-${f.nome}">${values[f.nome]||''}</textarea>`:`<input type="${f.tipo}" id="cf-${entity}-${f.nome}" value="${values[f.nome]||''}">`}</div>`).join('');
+}
+function getCustomFieldValues(containerId,entity){
+  const out={};((DB.campos||{})[entity]||[]).forEach(f=>{const e=$(`cf-${entity}-${f.nome}`);if(e)out[f.nome]=e.value;});return out;
+}
+
+// ══════════════════════════════════════════════
+// DETALHE PROCESSO
+// ══════════════════════════════════════════════
+function openDetalhes(id){
+  const p=getProc(id);if(!p)return;
+  $('det-title').textContent=numShort(p.num,50);
+  const ands=(DB.and||[]).filter(a=>a.procId===id).sort((a,b)=>b.data.localeCompare(a.data));
+  const tars=(DB.tar||[]).filter(t=>t.procId===id);
+  const evs=(DB.eventos||[]).filter(e=>e.procId===id).sort((a,b)=>a.data.localeCompare(b.data));
+  $('det-body').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+      <div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;margin-bottom:3px">Área</div>${pillArea(p.area)}</div>
+      <div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;margin-bottom:3px">Status</div>${pillStatus(p.status)}</div>
+      <div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;margin-bottom:3px">Modalidade</div>${pillModal(p.modal)}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;margin-bottom:2px">Autor</div><div style="font-size:12px">${p.autor||'—'}</div></div>
+      <div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;margin-bottom:2px">Valor da Causa</div><div style="font-size:12px">${p.valor||'—'}</div></div>
+    </div>
+    <div style="margin-bottom:10px"><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;margin-bottom:2px">Réu / Polo Passivo</div><div style="font-size:12px;color:var(--txt2)">${p.reu||'—'}</div></div>
+    <div style="margin-bottom:14px"><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;margin-bottom:2px">Fórum / Vara</div><div style="font-size:12px;color:var(--txt2)">${p.forum||'—'}</div></div>
+
+    <!-- EVENTOS do processo -->
+    <div style="border-top:1px solid var(--bdr);padding-top:12px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:500;color:var(--gold3);text-transform:uppercase;letter-spacing:.4px;flex:1">Prazos & Audiências (${evs.length})</div>
+        <button class="btn btn-xs" onclick="closeOv('ov-det');openEventoFormDia('');editId.evento=null;setVal('ev-proc',${id});">+ Novo prazo</button>
+      </div>
+      ${evs.length?evs.map(e=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bdr)">
+        <span style="width:7px;height:7px;border-radius:50%;background:${e.cor||evTipoColor(e.tipo)};flex-shrink:0"></span>
+        <span style="font-size:11px;flex:1">${e.titulo}</span>
+        <span style="font-size:10px;color:var(--txt3)">${fmtDate(e.data)}${e.hora?' '+e.hora:''}</span>
+        <span class="pill" style="font-size:9px;${daysUntil(e.data)<0?'color:var(--red)':daysUntil(e.data)<=3?'color:var(--amber)':'color:var(--green)'}">${daysUntil(e.data)===0?'Hoje':daysUntil(e.data)<0?Math.abs(daysUntil(e.data))+'d atrás':daysUntil(e.data)+'d'}</span>
+      </div>`).join(''):`<div style="font-size:12px;color:var(--txt3)">Nenhum evento cadastrado.</div>`}
+    </div>
+
+    <!-- TAREFAS do processo -->
+    <div style="border-top:1px solid var(--bdr);padding-top:12px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:500;color:var(--gold3);text-transform:uppercase;letter-spacing:.4px;flex:1">Tarefas (${tars.length})</div>
+        <button class="btn btn-xs btn-gold" onclick="closeOv('ov-det');openTarFormFromProc(${id})">+ Nova tarefa</button>
+      </div>
+      ${tars.length?tars.map(t=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bdr)">
+        <div style="flex:1"><div style="font-size:11px">${t.titulo}</div><div style="font-size:10px;color:var(--txt3)">${t.prazo?fmtDate(t.prazo)+' · ':''} ${t.resp||''}</div></div>
+        ${pillStatus(t.status)}${pillPrio(t.prio)}
+      </div>`).join(''):`<div style="font-size:12px;color:var(--txt3)">Nenhuma tarefa vinculada.</div>`}
+    </div>
+
+    <!-- ANDAMENTOS do processo -->
+    <div style="border-top:1px solid var(--bdr);padding-top:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:500;color:var(--gold3);text-transform:uppercase;letter-spacing:.4px;flex:1">Andamentos (${ands.length})</div>
+        <button class="btn btn-xs btn-blue" onclick="closeOv('ov-det');openCNJModalFor(${id})">CNJ</button>
+        <button class="btn btn-xs" onclick="closeOv('ov-det');openAndForm(null,${id})">+ Novo</button>
+      </div>
+      ${ands.length?ands.map(a=>`<div style="background:var(--bg2);border:1px solid var(--bdr);border-radius:6px;padding:9px 11px;margin-bottom:6px">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px">
+          <span style="font-size:10px;padding:1px 6px;border-radius:3px;background:rgba(201,168,76,.1);color:var(--gold3);border:1px solid var(--bdr)">${a.tipo}</span>
+          <span style="font-size:10px;color:var(--txt3);margin-left:auto">${fmtDate(a.data)}${a.resp?' · '+a.resp:''}</span>
+        </div>
+        <div style="font-size:12px;color:var(--txt2);line-height:1.6;white-space:pre-wrap;word-break:break-word">${a.desc||''}</div>
+      </div>`).join(''):`<div style="font-size:12px;color:var(--txt3)">Nenhum andamento registrado.</div>`}
+    </div>`;
+  $('det-footer').innerHTML=`<button class="btn" onclick="closeOv('ov-det')">Fechar</button><button class="btn btn-gold" onclick="closeOv('ov-det');openProcForm(${id})">Editar processo</button>`;
+  openOv('ov-det');
+}
+
+// ══════════════════════════════════════════════
+// CNJ
+// ══════════════════════════════════════════════
+function openCNJModal(){setVal('cnj-input','');$('cnj-result').innerHTML='';$('cnj-importar').style.display='none';cnjLastData=null;openOv('ov-cnj');}
+function openCNJModalFor(procId){openCNJModal();const p=getProc(procId);if(p)setVal('cnj-input',p.num);}
+async function consultarCNJ(){
+  const num=val('cnj-input');if(!num){showToast('Informe o número','error');return;}
+  $('cnj-result').innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:12px 0;font-size:12px;color:var(--txt3)"><div class="spinner"></div>Consultando DataJud...</div>`;
+  $('cnj-importar').style.display='none';
+  try{
+    const r=await fetch(`/api/cnj/${encodeURIComponent(num)}`);
+    const data=await r.json();
+    if(data.erro){$('cnj-result').innerHTML=`<div style="font-size:12px;color:var(--red);padding:10px 0">⚠ ${data.erro}</div>`;return;}
+    cnjLastData={num,data};
+    const movs=data.movimentos||[];
+    $('cnj-result').innerHTML=`<div class="cnj-box">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span class="cnj-badge">${data.tribunal||''}</span><span style="font-size:11px;color:var(--txt2)">${data.orgaoJulgador||''}</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div class="cnj-field"><div class="cnj-lbl">Classe</div><div class="cnj-val">${data.classe||'—'}</div></div>
+        <div class="cnj-field"><div class="cnj-lbl">Ajuizamento</div><div class="cnj-val">${fmtDate(data.dataAjuizamento)||'—'}</div></div>
+        <div class="cnj-field"><div class="cnj-lbl">Assunto</div><div class="cnj-val" style="grid-column:span 1">${data.assunto||'—'}</div></div>
+        <div class="cnj-field"><div class="cnj-lbl">Grau</div><div class="cnj-val">${data.grau||'—'}</div></div>
+      </div>
+      <div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px">Últimas movimentações (${movs.length})</div>
+      ${movs.slice(0,10).map(m=>`<div class="cnj-mov"><div style="display:flex;align-items:center;gap:7px;margin-bottom:2px"><span style="font-size:11px;color:var(--gold3)">${m.tipo}</span><span style="font-size:10px;color:var(--txt3);margin-left:auto">${fmtDate(m.data)}</span></div>${m.complemento?`<div style="font-size:11px;color:var(--txt2)">${m.complemento}</div>`:''}</div>`).join('')||'<div style="font-size:12px;color:var(--txt3)">Sem movimentações.</div>'}
+    </div>`;
+    if(movs.length)$('cnj-importar').style.display='inline-flex';
+  }catch(e){$('cnj-result').innerHTML=`<div style="font-size:12px;color:var(--red);padding:10px 0">⚠ Erro de conexão. Verifique se o servidor está rodando.</div>`;}
+}
+async function importarAndamentos(){
+  if(!cnjLastData)return;
+  const{num,data}=cnjLastData;
+  const proc=(DB.proc||[]).find(p=>p.num===num);
+  if(!proc){showToast('Cadastre o processo primeiro','error');return;}
+  let importados=0;
+  for(const m of(data.movimentos||[])){
+    const jaExiste=(DB.and||[]).some(a=>a.procId===proc.id&&a.data===m.data&&a.tipo===m.tipo);
+    if(!jaExiste){await api('POST','/api/and',{procId:proc.id,data:m.data,tipo:m.tipo,resp:'DataJud/CNJ',desc:m.complemento||m.tipo});importados++;}
+  }
+  await loadDB();closeOv('ov-cnj');showToast(`${importados} andamentos importados!`,'info');
+  if(currentPage==='andamentos')renderAnd();
+}
+
+// ══════════════════════════════════════════════
+// OVERLAYS — fechar no fundo
+// ══════════════════════════════════════════════
+document.querySelectorAll('.overlay').forEach(ov=>{ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open');});});
+document.addEventListener('click',e=>{const p=$('notif-panel');if(p.classList.contains('open')&&!p.contains(e.target)&&!$('notif-bell').contains(e.target))p.classList.remove('open');});
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+loadDB().then(()=>{renderDash();});
+</script>
+</body>
+</html>
