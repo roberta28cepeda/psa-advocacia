@@ -1,0 +1,456 @@
+{
+  "proc": [
+    {
+      "id": 1,
+      "num": "0837052-73.2025.8.19.0209",
+      "area": "FAMILIA",
+      "autor": "JULIANE LIMA RANGEL",
+      "reu": "ESPÓLIO DE RODOLFO PORTILHO DE LIMA / BALIEIRA / DULCEMAR PORTILHO DE LIMA",
+      "forum": "2ª Vara de Família da Regional da Barra da Tijuca",
+      "modal": "PROCESSO PRINCIPAL",
+      "sistema": "ONLINEPJE",
+      "status": "PENDENTE",
+      "valor": "R$1.000,00",
+      "custom": {}
+    },
+    {
+      "id": 2,
+      "num": "0842819-37.2025.8.19.0001",
+      "area": "CRIMINAL",
+      "autor": "DULCEMAR PORTILHO DE LIMA",
+      "reu": "RIO DE JANEIRO SECRETARIA DE EST. DE SEGURANCA PUBLICA",
+      "forum": "19ª Vara Criminal da Comarca da Capital",
+      "modal": "DESDOBRAMENTO",
+      "sistema": "ONLINEPJE",
+      "status": "EM ANDAMENTO",
+      "valor": "R$0,00",
+      "custom": {}
+    },
+    {
+      "id": 3,
+      "num": "0800198-80.2025.8.19.0209",
+      "area": "INVENTARIO",
+      "autor": "DULCEMAR PORTILHO DE LIMA",
+      "reu": "ESPÓLIO DE RODOLFO PORTILHO DE LIMA / BALIEIRA / DULCEMAR PORTILHO DE LIMA",
+      "forum": "3ª Vara de Família da Regional da Barra da Tijuca",
+      "modal": "DESDOBRAMENTO",
+      "sistema": "ONLINEPJE",
+      "status": "EM ANDAMENTO",
+      "valor": "R$50.000,00",
+      "custom": {}
+    },
+    {
+      "id": 4,
+      "num": "REGISTRO DE OCORRÊNCIA 016-24597/2024",
+      "area": "CRIMINAL",
+      "autor": "JULIANE LIMA RANGEL",
+      "reu": "DULCEMAR PORTILHO DE LIMA",
+      "forum": "16ª Delegacia de Polícia Civil do Estado do Rio de Janeiro",
+      "modal": "DESDOBRAMENTO",
+      "sistema": "AREA RESTRITA - OAB/RJ",
+      "status": "FINALIZADO",
+      "valor": "R$0,00",
+      "custom": {}
+    },
+    {
+      "id": 5,
+      "num": "0805429-25.2024.8.19.0209",
+      "area": "FAMILIA",
+      "autor": "AMANDA MARISTELA LOIOLA GUIMARAES",
+      "reu": "TITTO VITO LOIOLA GUIMARÃES GALVÃO",
+      "forum": "3ª Vara de Família da Regional da Barra da Tijuca",
+      "modal": "DESDOBRAMENTO",
+      "sistema": "ONLINEPJE",
+      "status": "EM ANDAMENTO",
+      "valor": "R$1.000,00",
+      "custom": {}
+    },
+    {
+      "id": 6,
+      "num": "5097923-29.2024.4.02.5101",
+      "area": "PREVIDENCIARIO",
+      "autor": "RODOLFO PORTILHO DE LIMA BALIEIRA",
+      "reu": "INSTITUTO NACIONAL DO SEGURO SOCIAL",
+      "forum": "40ª Vara Federal do Rio de Janeiro",
+      "modal": "DESDOBRAMENTO",
+      "sistema": "JUSTIÇA FEDERAL 2ª REGIÃO",
+      "status": "PENDENTE",
+      "valor": "R$10.000,00",
+      "custom": {}
+    },
+    {
+      "id": 7,
+      "num": "0002125-97.2026.8.05.0103",
+      "area": "TRABALHISTA",
+      "autor": "MOBILY PETS LTDA",
+      "reu": "NADINE BATISTA DOS SANTOS",
+      "forum": "",
+      "modal": "PROCESSO PRINCIPAL",
+      "sistema": "ONLINEPJE",
+      "status": "EM ANDAMENTO",
+      "valor": "R$0,00",
+      "custom": {}
+    },
+    {
+      "id": 8,
+      "num": "006770-88.2026.8.17.8201",
+      "area": "TRABALHISTA",
+      "autor": "MARIA JACIRA RODRIGUES DE QUARESMA",
+      "reu": "MOBILY PETS LTDA",
+      "forum": "",
+      "modal": "PROCESSO PRINCIPAL",
+      "sistema": "ONLINEPJE",
+      "status": "EM ANDAMENTO",
+      "valor": "R$0,00",
+      "custom": {}
+    }
+  ],
+  "and": [
+    {
+      "id": 1,
+      "procId": 2,
+      "data": "2025-12-11",
+      "tipo": "Decisão",
+      "resp": "Dr. PSA",
+      "desc": "A 19ª Vara Criminal determinou remessa dos autos ao TJRJ para apreciação da gratuidade de justiça."
+    },
+    {
+      "id": 2,
+      "procId": 3,
+      "data": "2026-02-20",
+      "tipo": "Consulta PJe",
+      "resp": "Dr. PSA",
+      "desc": "Consulta realizada no PJe em 20/02/2026."
+    },
+    {
+      "id": 3,
+      "procId": 4,
+      "data": "2024-12-01",
+      "tipo": "Resposta OAB",
+      "resp": "Dr. PSA",
+      "desc": "Solicitação deferida via convênio OAB/RJ. Protocolar no SESOP."
+    },
+    {
+      "id": 4,
+      "procId": 5,
+      "data": "2025-04-01",
+      "tipo": "Juntada",
+      "resp": "Dr. PSA",
+      "desc": "Juntada de Petição de Manifestação do MPRJ."
+    },
+    {
+      "id": 5,
+      "procId": 6,
+      "data": "2025-09-16",
+      "tipo": "Petição",
+      "resp": "Dr. PSA",
+      "desc": "16/09/2025 — PETIÇÃO — Refer. ao Evento 14."
+    }
+  ],
+  "tar": [
+    {
+      "id": 1,
+      "titulo": "Consultar andamento processo família Juliane",
+      "procId": 1,
+      "resp": "Dr. PSA",
+      "prazo": "2025-05-15",
+      "prio": "Alta",
+      "status": "Pendente",
+      "obs": ""
+    },
+    {
+      "id": 2,
+      "titulo": "Preparar petição mandado de segurança",
+      "procId": 2,
+      "resp": "Dr. PSA",
+      "prazo": "2025-05-20",
+      "prio": "Alta",
+      "status": "Em Andamento",
+      "obs": ""
+    },
+    {
+      "id": 3,
+      "titulo": "Revisar inventário — documentos pendentes",
+      "procId": 3,
+      "resp": "Dr. PSA",
+      "prazo": "2025-06-01",
+      "prio": "Média",
+      "status": "Pendente",
+      "obs": ""
+    },
+    {
+      "id": 4,
+      "titulo": "Contato com cliente INSS",
+      "procId": 6,
+      "resp": "Dr. PSA",
+      "prazo": "2025-05-30",
+      "prio": "Baixa",
+      "status": "Aguardando Retorno",
+      "obs": ""
+    }
+  ],
+  "cli": [
+    {
+      "id": 1,
+      "nome": "JULIANE LIMA RANGEL",
+      "tipo": "PF",
+      "doc": "",
+      "tel": "",
+      "email": "",
+      "end": "Rio de Janeiro - RJ",
+      "nasc": "",
+      "obs": "Autora processo família e ocorrência criminal.",
+      "custom": {}
+    },
+    {
+      "id": 2,
+      "nome": "DULCEMAR PORTILHO DE LIMA",
+      "tipo": "PF",
+      "doc": "",
+      "tel": "",
+      "email": "",
+      "end": "Rio de Janeiro - RJ",
+      "nasc": "",
+      "obs": "Autora mandado de segurança e inventário.",
+      "custom": {}
+    },
+    {
+      "id": 3,
+      "nome": "AMANDA MARISTELA LOIOLA GUIMARAES",
+      "tipo": "PF",
+      "doc": "",
+      "tel": "",
+      "email": "",
+      "end": "Rio de Janeiro - RJ",
+      "nasc": "",
+      "obs": "Ação de família na 3ª Vara.",
+      "custom": {}
+    },
+    {
+      "id": 4,
+      "nome": "RODOLFO PORTILHO DE LIMA BALIEIRA",
+      "tipo": "PF",
+      "doc": "",
+      "tel": "",
+      "email": "",
+      "end": "Rio de Janeiro - RJ",
+      "nasc": "",
+      "obs": "Ação previdenciária contra INSS.",
+      "custom": {}
+    },
+    {
+      "id": 5,
+      "nome": "MOBILY PETS LTDA",
+      "tipo": "PJ",
+      "doc": "51.327.049/0001-94",
+      "tel": "(21) 7932-6339",
+      "email": "mobilypetsadm@gmail.com",
+      "end": "",
+      "nasc": "",
+      "obs": "2 processos trabalhistas ativos.",
+      "custom": {}
+    }
+  ],
+  "eventos": [
+    {
+      "id": 1,
+      "procId": 1,
+      "tipo": "prazo",
+      "titulo": "Prazo para manifestação",
+      "data": "2025-05-10",
+      "hora": "23:59",
+      "descricao": "Prazo fatal para petição",
+      "notificar": true,
+      "notificadoDias": 3,
+      "cor": "#e07070"
+    },
+    {
+      "id": 2,
+      "procId": 2,
+      "tipo": "audiencia",
+      "titulo": "Audiência de instrução",
+      "data": "2025-05-20",
+      "hora": "14:00",
+      "descricao": "19ª Vara Criminal",
+      "notificar": true,
+      "notificadoDias": 2,
+      "cor": "#8ab0e0"
+    },
+    {
+      "id": 3,
+      "procId": 5,
+      "tipo": "audiencia",
+      "titulo": "Audiência de conciliação",
+      "data": "2025-06-05",
+      "hora": "10:30",
+      "descricao": "3ª Vara de Família",
+      "notificar": true,
+      "notificadoDias": 2,
+      "cor": "#d080b0"
+    },
+    {
+      "id": 4,
+      "procId": 6,
+      "tipo": "prazo",
+      "titulo": "Prazo recursal INSS",
+      "data": "2025-06-15",
+      "hora": "23:59",
+      "descricao": "TRF 2ª Região",
+      "notificar": true,
+      "notificadoDias": 5,
+      "cor": "#70b0e0"
+    },
+    {
+      "id": 5,
+      "procId": 3,
+      "tipo": "reuniao",
+      "titulo": "Reunião com cliente — inventário",
+      "data": "2025-05-08",
+      "hora": "16:00",
+      "descricao": "Escritório",
+      "notificar": true,
+      "notificadoDias": 1,
+      "cor": "#c9a84c"
+    }
+  ],
+  "demandas": [
+    {
+      "id": 1,
+      "titulo": "Regularização documental — Espólio Portilho",
+      "procId": 3,
+      "status": "Em Andamento",
+      "prioridade": "Alta",
+      "responsavel": "Dr. PSA",
+      "descricao": "Regularizar documentação do espólio para prosseguimento do inventário.",
+      "etapas": [
+        {
+          "id": 1,
+          "texto": "Levantar certidões",
+          "feito": true
+        },
+        {
+          "id": 2,
+          "texto": "Protocolar habilitação",
+          "feito": false
+        },
+        {
+          "id": 3,
+          "texto": "Aguardar homologação",
+          "feito": false
+        }
+      ],
+      "dataInicio": "2025-04-01",
+      "dataPrazo": "2025-07-01",
+      "progresso": 33
+    },
+    {
+      "id": 2,
+      "titulo": "Recurso INSS — Coleta de documentos",
+      "procId": 6,
+      "status": "Pendente",
+      "prioridade": "Alta",
+      "responsavel": "Dr. PSA",
+      "descricao": "Coletar laudos médicos e histórico previdenciário para embasar recurso.",
+      "etapas": [
+        {
+          "id": 1,
+          "texto": "Solicitar laudos ao cliente",
+          "feito": false
+        },
+        {
+          "id": 2,
+          "texto": "Organizar documentos",
+          "feito": false
+        },
+        {
+          "id": 3,
+          "texto": "Protocolar recurso",
+          "feito": false
+        }
+      ],
+      "dataInicio": "2025-04-10",
+      "dataPrazo": "2025-06-15",
+      "progresso": 0
+    },
+    {
+      "id": 3,
+      "titulo": "Mobily Pets — Defesa trabalhista Nadine",
+      "procId": 7,
+      "status": "Em Andamento",
+      "prioridade": "Alta",
+      "responsavel": "Dr. PSA",
+      "descricao": "Defesa da Mobily Pets no processo trabalhista movido por Nadine Batista dos Santos.",
+      "etapas": [
+        {
+          "id": 1,
+          "texto": "Coletar documentos da empresa",
+          "feito": false
+        },
+        {
+          "id": 2,
+          "texto": "Elaborar contestação",
+          "feito": false
+        },
+        {
+          "id": 3,
+          "texto": "Protocolar defesa",
+          "feito": false
+        },
+        {
+          "id": 4,
+          "texto": "Acompanhar audiência",
+          "feito": false
+        }
+      ],
+      "dataInicio": "2026-04-01",
+      "dataPrazo": "",
+      "progresso": 0
+    },
+    {
+      "id": 4,
+      "titulo": "Mobily Pets — Defesa trabalhista Maria Jacira",
+      "procId": 8,
+      "status": "Em Andamento",
+      "prioridade": "Alta",
+      "responsavel": "Dr. PSA",
+      "descricao": "Defesa da Mobily Pets no processo trabalhista movido por Maria Jacira Rodrigues de Quaresma.",
+      "etapas": [
+        {
+          "id": 1,
+          "texto": "Coletar documentos da empresa",
+          "feito": false
+        },
+        {
+          "id": 2,
+          "texto": "Elaborar contestação",
+          "feito": false
+        },
+        {
+          "id": 3,
+          "texto": "Protocolar defesa",
+          "feito": false
+        },
+        {
+          "id": 4,
+          "texto": "Acompanhar audiência",
+          "feito": false
+        }
+      ],
+      "dataInicio": "2026-04-01",
+      "dataPrazo": "",
+      "progresso": 0
+    }
+  ],
+  "campos": {
+    "proc": [],
+    "cli": []
+  },
+  "next_id": {
+    "proc": 9,
+    "and": 6,
+    "tar": 5,
+    "cli": 6,
+    "evento": 6,
+    "demanda": 5
+  }
+}
