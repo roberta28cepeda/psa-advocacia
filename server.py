@@ -172,6 +172,9 @@ async def consultar_cnj(numero:str):
 
 app.mount("/static",StaticFiles(directory="static"),name="static")
 
+@app.get("/sw.js")
+def service_worker(): return FileResponse("static/sw.js", media_type="application/javascript")
+
 @app.get("/")
 def index(): return FileResponse("static/index.html")
 
